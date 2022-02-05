@@ -1,34 +1,29 @@
-## Usage
+# Material Design Helper（開発中）
+`Material design`での開発をよりスムーズに正確に行えるようなツールを揃えたWebサービスです。
 
-Those templates dependencies are maintained via [pnpm](https://pnpm.io) via `pnpm up -Lri`.
+<br>
 
-This is the reason you see a `pnpm-lock.yaml`. That being said, any package manager will work. This file can be safely be removed once you clone a template.
+## マップ
+- Color Palette
+- Approximate Color
+- 名前不詳（近い倍数へ値を変更するもの）
+
+<br>
+
+## 使用技術
+
+### フロントエンドフレームワーク
+**`Solid`**
+
+Docs: https://www.solidjs.com/guides/getting-started
 
 ```bash
-$ npm install # or pnpm install or yarn install
+npm i
+npm run dev
 ```
 
-### Learn more on the [Solid Website](https://solidjs.com) and come chat with us on our [Discord](https://discord.com/invite/solidjs)
 
-## Available Scripts
+### UIコンポーネント
+**`Material Components`**
 
-In the project directory, you can run:
-
-### `npm dev` or `npm start`
-
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.<br>
-
-### `npm run build`
-
-Builds the app for production to the `dist` folder.<br>
-It correctly bundles Solid in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
-
-## Deployment
-
-You can deploy the `dist` folder to any static host provider (netlify, surge, now, etc.)
+Docs： https://material.io/components  
