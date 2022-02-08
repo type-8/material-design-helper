@@ -26,4 +26,4 @@ npm run dev
 ### UIコンポーネント
 **`Material Components`**
 
-Docs： https://material.io/components  
+Docs： https://material.io/develop/web
