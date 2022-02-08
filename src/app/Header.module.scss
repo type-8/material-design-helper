@@ -1,0 +1,23 @@
+.primary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.secondary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.link {
+  text-decoration: none;
+
+  &:visited, &:active {
+    color: inherit;
+  }
+}
+
+.tab-bar {
+  width: auto;
+}
