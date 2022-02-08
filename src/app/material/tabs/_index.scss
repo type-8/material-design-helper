@@ -1,0 +1,16 @@
+@use '@material/tab-bar';
+@use '@material/tab-scroller';
+@use '@material/tab-indicator';
+@use '@material/tab';
+
+@use '../theme';
+
+@include tab-bar.core-styles();
+@include tab-scroller.core-styles();
+@include tab-indicator.core-styles();
+@include tab.core-styles();
+
+
+.mdc-tab {
+  @include theme.custom-ripple-transition();
+}
