@@ -1,0 +1,15 @@
+@use 'sass:map';
+@use './theme';
+
+
+@include theme.colors();
+
+body {
+  color: theme.$light-text;
+  background-color: map.get(theme.$light-background, primary);
+
+  .dark-theme {
+    color: theme.$dark-text;
+    background-color: map.get(theme.$dark-background, primary);
+  }
+}

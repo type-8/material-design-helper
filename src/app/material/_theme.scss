@@ -1,0 +1,239 @@
+// Theming Docs: https://material.io/develop/web/theming/theming-guide
+
+// Imports
+@use 'sass:map';
+@use 'sass:meta';
+
+@use './palette';
+@use '@material/theme' with (
+  $primary: map.get(palette.$pink, 200),
+  $on-primary: palette.$black-text,
+  $secondary: map.get(palette.$lighter-pink, 200),
+  $on-secondary: palette.$black-text,
+  $surface: map.get(palette.$pink, 200),
+  $on-surface: palette.$black-text,
+  $background: white
+);
+
+
+// Exports
+@forward './palette';
+@forward '@material/theme';
+
+
+$light-text: palette.$black-text;
+$dark-text:  palette.$white-text;
+
+
+$light-background: (
+  base: white,
+  primary: map.get(palette.$grey, 50),
+  secondary: map.get(palette.$grey, 100),
+  tertiary: map.get(palette.$grey, 300),
+  card: white, // raised を含む,
+
+  text: $light-text
+);
+
+$dark-background: (
+  base: black,
+  primary: #303030,
+  secondary: map.get(palette.$grey, 900),
+  tertiary: black,
+  card: map.get(palette.$grey, 800), // raised を含む,
+
+  text: $dark-text
+);
+
+
+$color-palette-keys: (primary, secondary, accent, warn);
+
+$light-color-palette: (
+  primary: (
+    primary: map.get(palette.$pink, 200),
+    secondary: map.get(palette.$lighter-pink, 200),
+    surface: map.get(palette.$pink, 200),
+
+    on-primary: map.get(palette.$pink, contrast, 200),
+    on-secondary: map.get(palette.$lighter-pink, contrast, 200),
+    on-surface: map.get(palette.$pink, contrast, 200)
+  ),
+
+  accent: (
+    primary: map.get(palette.$light-blue, 200),
+    secondary: map.get(palette.$lighter-light-blue, 200),
+    surface: map.get(palette.$light-blue, 200),
+
+    on-primary: map.get(palette.$light-blue, contrast, 200),
+    on-secondary: map.get(palette.$lighter-light-blue, contrast, 200),
+    on-surface: map.get(palette.$light-blue, contrast, 200)
+  ),
+
+  secondary: (
+    primary: map.get(palette.$lighter-light-green, 500),
+    secondary: map.get(palette.$lighter-light-green, 400),
+    surface: map.get(palette.$lighter-light-green, 500),
+
+    on-primary: map.get(palette.$lighter-light-green, contrast, 500),
+    on-secondary: map.get(palette.$lighter-light-green, contrast, 400),
+    on-surface: map.get(palette.$lighter-light-green, contrast, 500)
+  ),
+
+  warn: (
+    primary: map.get(palette.$red, A200),
+    secondary: map.get(palette.$lighter-red, A200),
+    surface: map.get(palette.$red, A200),
+
+    on-primary: map.get(palette.$red, contrast, A200),
+    on-secondary: map.get(palette.$lighter-red, contrast, A200),
+    on-surface: map.get(palette.$red, contrast, A200)
+  ),
+);
+
+$dark-color-palette: (
+  primary: (
+    primary: map.get(palette.$deep-purple, A200),
+    secondary: map.get(palette.$deep-purple, A100),
+    surface: map.get(palette.$deep-purple, A200),
+
+    on-primary: map.get(palette.$deep-purple, contrast, A200),
+    on-secondary: map.get(palette.$deep-purple, contrast, A100),
+    on-surface: map.get(palette.$deep-purple, contrast, A200)
+  ),
+
+  accent: (
+    primary: map.get(palette.$amber, A200),
+    secondary: map.get(palette.$amber, A100),
+    surface: map.get(palette.$amber, A200),
+
+    on-primary: map.get(palette.$amber, contrast, A200),
+    on-secondary: map.get(palette.$amber, contrast, A100),
+    on-surface: map.get(palette.$amber, contrast, A200)
+  ),
+
+  secondary: (
+    primary: map.get(palette.$lighter-green, A200),
+    secondary: map.get(palette.$lighter-green, A100),
+    surface: map.get(palette.$lighter-green, A200),
+
+    on-primary: map.get(palette.$lighter-light-green, contrast, A200),
+    on-secondary: map.get(palette.$lighter-light-green, contrast, A100),
+    on-surface: map.get(palette.$lighter-light-green, contrast, A200)
+  ),
+
+  warn: map.get($light-color-palette, warn) // 変えてもいいかも
+);
+
+
+
+/**
+  * @description 背景色用のCSS変数を設定する
+  * @param { 'base' | 'primary' | 'secondary | 'tertiary' | 'card' | 'dark' | 'light' | color } $color
+  */
+@mixin background-color($color) {
+  @if meta.type-of($color) == color {
+    --mdc-theme-primary:   #{$color};
+    --mdc-theme-secondary: #{$color};
+    --mdc-theme-surface:   #{$color};
+
+  } @else {
+    $_color: map.get($light-background, $color);
+
+    --mdc-theme-primary:    #{$_color};
+    --mdc-theme-secondary:  #{$_color};
+    --mdc-theme-surface:    #{$_color};
+    --mdc-theme-background: #{$_color};
+
+    .dark-theme {
+      $_color: map.get($dark-background, $color);
+
+      --mdc-theme-primary:   #{$_color};
+      --mdc-theme-secondary: #{$_color};
+      --mdc-theme-surface:   #{$_color};
+    }
+  }
+}
+
+
+/**
+  * @description 文字色用のCSS変数を設定する
+  * @param { 'light' | 'dark' | color } $color
+  */
+@mixin text-color($color) {
+  @if meta.type-of($color) == color {
+    --mdc-theme-on-primary:   #{$color};
+    --mdc-theme-on-secondary: #{$color};
+    --mdc-theme-on-surface:   #{$color};
+
+
+  } @else {
+    $_color: if($color == dark, $dark-text, $light-text);
+
+    --mdc-theme-on-primary:   #{$_color};
+    --mdc-theme-on-secondary: #{$_color};
+    --mdc-theme-on-surface:   #{$_color};
+  
+    .dark-theme {
+      $_color: if($color == light, $light-text, $dark-text);
+
+      --mdc-theme-on-primary:   #{$_color};
+      --mdc-theme-on-secondary: #{$_color};
+      --mdc-theme-on-surface:   #{$_color};
+    }
+  }
+}
+
+
+/**
+  * @description MDCの面倒なthemingを一括で済ませる関数
+  * @param { 'light' | 'dark' | 'both' | null } $theme どのテーマで設定するか
+  */
+@mixin colors($theme: null) {
+  $palettes: null;
+
+  @if ($theme == light) {
+    $palettes: (light: $light-color-palette)
+
+  } @else if ($theme == dark) {
+    $palettes: (dark: $dark-color-palette);
+
+  } @else {
+    $palettes: (
+      light: $light-color-palette,
+      dark: $dark-color-palette
+    );
+  }
+
+
+  @each $theme-name, $palette in $palettes {
+    @if $theme-name == light {
+      @include _define-color-variables($palette);
+
+    } @else {
+      .dark-theme {
+        @include _define-color-variables($palette);
+      }
+    }
+  }
+}
+
+
+@mixin _define-color-variables($palette) {
+  @each $color-name, $color-palette in $palette {
+    $prefix: & or null;
+
+    #{$prefix}.mdc-#{$color-name} {
+      @each $key, $color in $color-palette {
+        --mdc-theme-#{$key}: #{$color};
+      } 
+    }
+  };
+}
+
+
+@mixin custom-ripple-transition() {
+  & &__ripple::before {
+    transition-timing-function: cubic-bezier(0.4, 0.0, 0.2, 1);
+    transition-duration: 120ms;
+  }
+}
