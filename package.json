@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@material/button": "^13.0.0",
+    "@material/icon-button": "^13.0.0",
     "@material/ripple": "^13.0.0",
     "solid-app-router": "^0.2.1",
     "solid-js": "^1.3.3"
