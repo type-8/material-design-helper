@@ -1,0 +1,20 @@
+@use './app/material/core';
+@use './app/material/Button';
+@use './app/material/tabs';
+
+@use '@material/typography';
+
+
+@include typography.core-styles();
+
+body {
+  margin: 0;
+}
+
+main {
+  display: block;
+}
+
+a, button {
+  -webkit-tap-highlight-color: transparent;
+}
