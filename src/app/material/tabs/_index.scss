@@ -1,9 +1,16 @@
+@use '../theme';
+
+
+$tab-text-color: var(--mdc-theme-text, theme.$light-text);
+@use '@material/tab' with (
+  $text-label-color-default: $tab-text-color,
+  $icon-color-default: $tab-text-color
+);
+
 @use '@material/tab-bar';
 @use '@material/tab-scroller';
 @use '@material/tab-indicator';
-@use '@material/tab';
 
-@use '../theme';
 
 @include tab-bar.core-styles();
 @include tab-scroller.core-styles();

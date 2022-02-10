@@ -24,6 +24,20 @@
 $light-text: palette.$black-text;
 $dark-text:  palette.$white-text;
 
+$light-divider: palette.$black-divider;
+$dark-divider:  palette.$white-divider;
+
+
+$light-foreground: (
+  text: $light-text,
+  divider: $light-divider
+);
+
+$dark-foreground: (
+  text: $dark-text,
+  divider: $dark-divider
+);
+
 
 $light-background: (
   base: white,
@@ -92,13 +106,13 @@ $light-color-palette: (
 
 $dark-color-palette: (
   primary: (
-    primary: map.get(palette.$deep-purple, A200),
-    secondary: map.get(palette.$deep-purple, A100),
-    surface: map.get(palette.$deep-purple, A200),
+    primary: map.get(palette.$purple, A200),
+    secondary: map.get(palette.$purple, A100),
+    surface: map.get(palette.$purple, A200),
 
-    on-primary: map.get(palette.$deep-purple, contrast, A200),
-    on-secondary: map.get(palette.$deep-purple, contrast, A100),
-    on-surface: map.get(palette.$deep-purple, contrast, A200)
+    on-primary: map.get(palette.$purple, contrast, A200),
+    on-secondary: map.get(palette.$purple, contrast, A100),
+    on-surface: map.get(palette.$purple, contrast, A200)
   ),
 
   accent: (
@@ -125,11 +139,8 @@ $dark-color-palette: (
 );
 
 
-
-/**
-  * @description 背景色用のCSS変数を設定する
-  * @param { 'base' | 'primary' | 'secondary | 'tertiary' | 'card' | 'dark' | 'light' | color } $color
-  */
+// @description 背景色用のCSS変数を設定する
+// @param { 'base' | 'primary' | 'secondary | 'tertiary' | 'card' | 'dark' | 'light' | color } $color
 @mixin background-color($color) {
   @if meta.type-of($color) == color {
     --mdc-theme-primary:   #{$color};
@@ -144,7 +155,7 @@ $dark-color-palette: (
     --mdc-theme-surface:    #{$_color};
     --mdc-theme-background: #{$_color};
 
-    .dark-theme {
+    .dark-theme & {
       $_color: map.get($dark-background, $color);
 
       --mdc-theme-primary:   #{$_color};
@@ -155,10 +166,8 @@ $dark-color-palette: (
 }
 
 
-/**
-  * @description 文字色用のCSS変数を設定する
-  * @param { 'light' | 'dark' | color } $color
-  */
+// @description 文字色用のCSS変数を設定する
+// @param { 'light' | 'dark' | color } $color
 @mixin text-color($color) {
   @if meta.type-of($color) == color {
     --mdc-theme-on-primary:   #{$color};
@@ -173,8 +182,8 @@ $dark-color-palette: (
     --mdc-theme-on-secondary: #{$_color};
     --mdc-theme-on-surface:   #{$_color};
   
-    .dark-theme {
-      $_color: if($color == light, $light-text, $dark-text);
+    .dark-theme & {
+      $_color: if($color == dark, $light-text, $dark-text);
 
       --mdc-theme-on-primary:   #{$_color};
       --mdc-theme-on-secondary: #{$_color};
@@ -184,51 +193,76 @@ $dark-color-palette: (
 }
 
 
-/**
-  * @description MDCの面倒なthemingを一括で済ませる関数
-  * @param { 'light' | 'dark' | 'both' | null } $theme どのテーマで設定するか
-  */
-@mixin colors($theme: null) {
-  $palettes: null;
+// @param { 'light' | 'dark' | 'both' | null } $theme
+// @param { map } $light,$dark
+@function wrap-theme-map($theme, $light, $dark) {
+  $map: null;
 
   @if ($theme == light) {
-    $palettes: (light: $light-color-palette)
+    $map: ( light: $light )
 
   } @else if ($theme == dark) {
-    $palettes: (dark: $dark-color-palette);
+    $map: ( dark: $dark );
 
   } @else {
-    $palettes: (
-      light: $light-color-palette,
-      dark: $dark-color-palette
+    $map: (
+      light: $light,
+      dark: $dark
     );
   }
 
+  @return $map;
+}
 
-  @each $theme-name, $palette in $palettes {
-    @if $theme-name == light {
-      @include _define-color-variables($palette);
 
-    } @else {
-      .dark-theme {
-        @include _define-color-variables($palette);
+// @param { 'light' | 'dark } $theme
+@mixin wrap-theme-selector($theme) {
+  @if $theme == dark {
+    $selector: if(&, if(#{&} == ':root', null, &), null);
+
+    .dark-theme #{$selector} {
+      @content;
+    }
+
+  } @else {
+    @content;
+  }
+}
+
+
+// @description `foreground map`にある変数をcss変数として定義する
+// @param { 'light' | 'dark' | 'both' | null } $theme
+@mixin foreground($theme: null) {
+  $foreground-map: wrap-theme-map($theme, $light-foreground, $dark-foreground);
+
+  @each $theme-label, $palette in $foreground-map {
+    @include wrap-theme-selector($theme-label) {
+      @each $label, $color in $palette {
+        --mdc-theme-#{$label}: #{$color};
       }
     }
   }
 }
 
 
-@mixin _define-color-variables($palette) {
-  @each $color-name, $color-palette in $palette {
-    $prefix: & or null;
+// @description MDCの面倒なthemingを一括で済ませる関数
+// @param { 'light' | 'dark' | 'both' | null } $theme
+@mixin colors($theme: null) {
+  $palette-map: wrap-theme-map($theme, $light-color-palette, $dark-color-palette);
 
-    #{$prefix}.mdc-#{$color-name} {
-      @each $key, $color in $color-palette {
-        --mdc-theme-#{$key}: #{$color};
-      } 
+  @each $theme-label, $palette in $palette-map {
+    @include wrap-theme-selector($theme-label) {
+      @each $color-label, $color-palette in $palette {
+        .mdc-#{$color-label}.mdc-#{$color-label} {
+          @each $label, $color in $color-palette {
+            --mdc-theme-#{$label}: #{$color};
+          }
+        }
+      };
     }
-  };
+  }
 }
+
 
 
 @mixin custom-ripple-transition() {
@@ -237,3 +271,4 @@ $dark-color-palette: (
     transition-duration: 120ms;
   }
 }
+
