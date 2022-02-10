@@ -18,3 +18,7 @@ main {
 a, button {
   -webkit-tap-highlight-color: transparent;
 }
+
+svg {
+  fill: currentColor;
+}
