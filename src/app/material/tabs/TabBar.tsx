@@ -1,5 +1,5 @@
 import { MDCTabBar } from '@material/tab-bar';
-import { Component, JSX, onMount } from 'solid-js';
+import { Component, JSX, onMount, splitProps } from 'solid-js';
 
 
 export type MdTabBarProps = {
@@ -8,9 +8,7 @@ export type MdTabBarProps = {
 } & JSX.IntrinsicElements['div'];
 
 const MdTabBar: Component<MdTabBarProps> = (props) => {
-  const { children, className, ...attrs } = props;
-
-  console.log(className);
+  const [localProps, attrs] = splitProps(props, ['children']);
 
   let element: HTMLDivElement;
 
@@ -21,11 +19,11 @@ const MdTabBar: Component<MdTabBarProps> = (props) => {
 
 
   return (
-    <div {...attrs} class={createHostClassName(className, props.theme)} role="tablist" ref={element!}>
+    <div {...attrs} class={createHostClassName(props.class, props.className, props.theme)} role="tablist" ref={element!}>
       <div class="mdc-tab-scroller">
         <div class="mdc-tab-scroller__scroll-area">
           <div class="mdc-tab-scroller__scroll-content">
-            { children }
+            { localProps.children }
           </div>
         </div>
       </div>
@@ -36,7 +34,7 @@ const MdTabBar: Component<MdTabBarProps> = (props) => {
 export default MdTabBar;
 
 
-const createHostClassName = (className?: string, theme?: string): string => {
+const createHostClassName = (className?: string, className2?: string, theme?: string): string => {
   let result = 'mdc-tab-bar';
 
   result += theme
@@ -45,6 +43,9 @@ const createHostClassName = (className?: string, theme?: string): string => {
 
   if (className)
     result += ` ${className}`;
+
+  if (className2)
+    result += ` ${className2}`;
 
   return result;
 }

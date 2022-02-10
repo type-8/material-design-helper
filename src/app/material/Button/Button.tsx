@@ -4,7 +4,8 @@ import {
   createEffect,
   createSignal,
   JSX,
-  onMount
+  onMount,
+  splitProps
   } from 'solid-js';
 
 export type MdButtonVariant = 'basic' | 'raised' | 'outlined' | 'icon';
@@ -17,7 +18,7 @@ export type MdButtonProps = {
 
 
 const MdButton: Component<MdButtonProps> = (props) => {
-  const { children, className, ...buttonAttr } = props;
+  const [localProps, attrs] = splitProps(props, ['children'])
 
   // コンポーネントがレンダリングされた後に代入される
   let element: HTMLButtonElement;
@@ -34,9 +35,10 @@ const MdButton: Component<MdButtonProps> = (props) => {
 
   // ボタンの見た目をアップデートする
   createEffect(() => {
-    setHostClassName(createHostClassName(className, props.variant, props.theme));
+    setHostClassName(createHostClassName(props.class, props.className, props.variant, props.theme));
   });
 
+  // `variant="icon"`のとき、Rippleを中央から出現させる
   createEffect(() => {
     props.variant === 'icon'
       ? ripple.unbounded = true
@@ -45,9 +47,9 @@ const MdButton: Component<MdButtonProps> = (props) => {
 
 
   return (
-    <button { ...buttonAttr } class={hostClassName()} ref={element!}>
+    <button { ...attrs } class={hostClassName()} ref={element!}>
       <span class='mdc-button__ripple'></span>
-      <span class='mdc-button__label'>{children}</span>
+      <span class='mdc-button__label'>{localProps.children}</span>
     </button>
   )
 }
@@ -55,7 +57,7 @@ export default MdButton;
 
 
 /** @description ボタンの見た目を設定する`className`を生成 */
-const createHostClassName = (className?: string, variant?: MdButtonVariant, theme?: string): string => {
+const createHostClassName = (className?: string, className2?: string, variant?: MdButtonVariant, theme?: string): string => {
   let result = 'mdc-button';
 
   switch (variant) {
@@ -81,6 +83,9 @@ const createHostClassName = (className?: string, variant?: MdButtonVariant, them
 
   if (className)
     result += ` ${className}`
+
+  if (className2)
+    result += ` ${className2}`
 
   return result;
 }
