@@ -9,9 +9,7 @@ import {
 import { Component, lazy } from 'solid-js';
 import Footer from './Footer';
 import Header from './Header';
-
-const ColorPalette = lazy(() => import('./views/ColorPalette'));
-const ApproximateColor = lazy(() => import('./views/ApproximateColor'));
+import ColorTools from './views/ColorTools';
 
 
 const App: Component = () => {
@@ -22,8 +20,8 @@ const App: Component = () => {
 
       <main>
         <Routes>
-          <Route path="/color-palette" component={ColorPalette}  />
-          <Route path="/approximate-color" component={ApproximateColor} />
+          <Route path="/color-tools" component={ColorTools} />
+          {/* <Route path="/functions" component={Functions} /> */}
         </Routes>
       </main>
 
