@@ -565,7 +565,7 @@ export const MATERIAL_DEFAULT_PALETTE: MaterialPalette = {
       contrast: 'white',
     },
     A100: {
-      color: '#070707',
+      color: '#b9f6ca',
       contrast: 'black',
     },
     A200: {
@@ -913,19 +913,19 @@ export const MATERIAL_DEFAULT_PALETTE: MaterialPalette = {
       contrast: 'white',
     },
     A100: {
-      color: '#',
+      color: '#ff9e80',
       contrast: 'black',
     },
     A200: {
-      color: '#',
+      color: '#ff6e40',
       contrast: 'black',
     },
     A400: {
-      color: '#',
+      color: '#ff3d00',
       contrast: 'white',
     },
     A700: {
-      color: '#',
+      color: '#dd2c00',
       contrast: 'white',
     },
   },
