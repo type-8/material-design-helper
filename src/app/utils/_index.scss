@@ -1,0 +1,24 @@
+@use 'sass:list';
+@use 'sass:meta';
+
+@mixin repeat-grid-template-columns($count-and-gap, $values...) {
+  $count: list.nth($count-and-gap, 1);
+  $gap: if(meta.type-of($count-and-gap) == list, list.nth($count-and-gap, 2), null);
+
+  grid-template-columns: repeat($count, $values...);
+  column-gap: $gap;
+
+  $columns: ();
+  @for $i from 1 through $count {
+    @each $value in $values {
+      $columns: list.append($columns, $value);
+
+      @if $gap {
+        $columns: list.append($columns, $gap);
+      }
+    }
+  }
+
+  -ms-grid-column: $columns;
+}
+
