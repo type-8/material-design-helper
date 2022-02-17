@@ -1,31 +1,24 @@
 $height: 48px;
 
 
-.header {
+.host {
   display: flex;
   align-items: center;
   justify-content: space-between;
 
-  box-sizing: border-box;
-  border-bottom: 2px solid var(--mdc-theme-divider);
 
   height: $height;
   
   padding: 0 8px;
+  border-bottom: 2px solid var(--mdc-theme-fg-divider);
   box-sizing: border-box;
 }
+
 
 .h1 {
   font-size: 18px;
   margin: 0 16px;
 }
-
-
-// .secondary {
-//   display: flex;
-//   align-items: center;
-//   justify-content: space-between;
-// }
 
 
 .link {
@@ -38,9 +31,9 @@ $height: 48px;
 
 
 .button {
-  text-transform: initial;
   height: $height;
   padding: 0 16px;
+  text-transform: initial;
 
   :global .mdc-button__ripple {
     border-radius: 0;
@@ -50,27 +43,4 @@ $height: 48px;
 
 .icon-button {
   margin: 0 8px;
-}
-
-
-$bottom-divider-height: 2px;
-
-.bottom-divider {
-  width: 100%;
-  height: $bottom-divider-height;
-  margin-top: -$bottom-divider-height;
-  background-color: var(--mdc-theme-divider);
-}
-
-.bottom-divider-spacer {
-  margin-bottom: $bottom-divider-height;
-}
-
-
-.tab-bar {
-  width: auto;
-
-  & :global .mdc-tab__text-label {
-    margin-bottom: $bottom-divider-height;
-  }
 }
