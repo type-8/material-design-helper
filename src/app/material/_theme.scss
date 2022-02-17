@@ -238,7 +238,22 @@ $dark-color-palette: (
   @each $theme-label, $palette in $foreground-map {
     @include wrap-theme-selector($theme-label) {
       @each $label, $color in $palette {
-        --mdc-theme-#{$label}: #{$color};
+        --mdc-theme-fg-#{$label}: #{$color};
+      }
+    }
+  }
+}
+
+
+// @description `background map`にある変数をcss変数として定義する
+// @param { 'light' | 'dark' | 'both' | null } $theme
+@mixin background($theme: null) {
+  $background-map: wrap-theme-map($theme, $light-background, $dark-background);
+
+  @each $theme-label, $palette in $background-map {
+    @include wrap-theme-selector($theme-label) {
+      @each $label, $color in $palette {
+        --mdc-theme-bg-#{$label}: #{$color};
       }
     }
   }
