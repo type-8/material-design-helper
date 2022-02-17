@@ -1,28 +1,19 @@
-import {
-  Location,
-  Navigate,
-  Navigator,
-  Route,
-  Router,
-  Routes
-  } from 'solid-app-router';
-import { Component, lazy } from 'solid-js';
+import { Router, useRoutes } from 'solid-app-router';
+import { Component } from 'solid-js';
 import Footer from './Footer';
 import Header from './Header';
-import ColorTools from './views/ColorTools';
+import { routes } from './router';
 
 
 const App: Component = () => {
+  const Routes = useRoutes(routes);
 
   return (
     <Router>
       <Header />
 
       <main>
-        <Routes>
-          <Route path="/color-tools" component={ColorTools} />
-          {/* <Route path="/functions" component={Functions} /> */}
-        </Routes>
+        <Routes />
       </main>
 
       <Footer />
