@@ -1,3 +1,27 @@
+@use '../../media-query';
+
+
 .body {
+  position: relative;
   display: flex;
+}
+
+
+.route-host {
+  width: 60%;
+}
+
+.color-viewer {
+  width: 40%;
+}
+
+
+@include media-query.mp {
+  .route-host, .color-viewer {
+    width: 100%;
+  }
+
+  .color-viewer {
+    pointer-events: none;
+  }
 }
