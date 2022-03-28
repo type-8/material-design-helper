@@ -1,19 +1,39 @@
-import { MDCTabBar } from '@material/tab-bar';
-import { Component, JSX, onMount, splitProps } from 'solid-js';
+import { MDCTabBarAdapter } from '@material/tab-bar';
+import {
+  Component,
+  createEffect,
+  JSX,
+  onMount,
+  splitProps
+  } from 'solid-js';
+import { MdTabBarCore } from './core';
 
 
 export type MdTabBarProps = {
   theme?: string;
-  tabBar?: (tabBar: MDCTabBar) => void;
+  tabBar?: (tabBar: MdTabBarCore) => void;
+  config?: Partial<MDCTabBarAdapter>;
 } & JSX.IntrinsicElements['div'];
 
 const MdTabBar: Component<MdTabBarProps> = (props) => {
   const [localProps, attrs] = splitProps(props, ['children']);
 
   let element: HTMLDivElement;
+  let tabBar: MdTabBarCore;
 
+
+  // TabBarがレンダリングされた後、`props.config`に変更があった場合に発火し、変更を加える
+  createEffect(() => {
+    const config = props.config;
+    if (config && tabBar) {
+      tabBar.mergeAdapter(config)
+    }
+  });
+
+
+  // マウント後、TabBarを生成する
   onMount(() => {
-    const tabBar = new MDCTabBar(element); // tabBarを生成
+    tabBar = new MdTabBarCore(element); // TabBarを生成
     props.tabBar?.(tabBar); // tabBarのインスタンスを共有
   });
 
