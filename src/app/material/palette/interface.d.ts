@@ -1,3 +1,6 @@
+export type MaterialPaletteKeys = ['default', 'lighter', 'darker'];
+export type MaterialPaletteKey = MaterialPaletteKeys[number];
+
 export type MaterialPaletteLabels = [
   'red',
   'pink',
