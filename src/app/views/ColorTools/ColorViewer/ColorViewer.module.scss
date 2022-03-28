@@ -1,0 +1,58 @@
+@use '../../../header-variables' as header;
+
+.host {
+  position: fixed;
+  top: 0;
+  right: 0;
+
+  height: 100%;
+
+  padding-top: header.$height + header.$secondary-height;
+  border-left: 1px solid var(--mdc-theme-fg-divider); // ごまかし
+  box-sizing: border-box;
+}
+
+
+.preview {
+  height: 60%;
+
+  background-color: var(--mdc-theme-bg-base);
+}
+
+
+.palette {
+  height: 40%;
+  width: 100%;
+
+  display: table;
+
+  border-collapse: collapse;
+  box-sizing: border-box;
+
+  background-color: var(--mdc-theme-bg-primary);
+}
+
+
+:global {
+  .cvt {
+    &-mono {
+      .cvt-default-primary {
+        background: var(--mdc-theme-bg-secondary,#f5f5f5);
+        fill: var(--mdc-theme-bg-secondary,#f5f5f5);
+        color: var(--mdc-theme-fg-text);
+      }
+    
+      .cvt-lighter-primary {
+        background: var(--mdc-theme-bg-primary,#fafafa);
+        fill: var(--mdc-theme-bg-primary,#fafafa);
+        color: var(--mdc-theme-fg-text);
+      }
+    
+      .cvt-darker-primary {
+        background: var(--mdc-theme-bg-tertiary,#e0e0e0);
+        fill: var(--mdc-theme-bg-tertiary,#e0e0e0);
+        color: var(--mdc-theme-fg-text);
+      }
+    }
+  }
+}
