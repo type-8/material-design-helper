@@ -1,59 +1,76 @@
+@use 'sass:math';
+@use '../../../../media-query';
 @use '../../../../material';
 @use '../../../../utils';
+
 
 $simple-color-count: 10;
 $accent-color-count: 4;
 $color-count: $simple-color-count + $accent-color-count;
 
+
+$label-count: 19;
+
+
 .host {
-  width: 100%;
-  flex-shrink: 0;
+  overflow-y: auto;
+  background-color: var(--mdc-theme-fg-divider);
 }
 
 
 .palette {
-  background-color: var(--mdc-theme-fg-divider);
-
   display: -ms-grid;
   display: grid;
 
-  -ms-grid-rows: auto;
-  @include utils.repeat-grid-template-columns(($color-count + 1, 1px), 1fr);
-  row-gap: 1px;
+  @include utils.repeat-grid-template('column', ($color-count + 1, 1px), 1fr);
+  @include utils.repeat-grid-template('row',    ($label-count + 1, 1px), 1fr);
+
+  align-items: stretch;
+
+  // margin: 0 1px 1px 0;
+
+  content-visibility: auto;
 }
 
 
-.label, .shade {
-  font-size: 14px;
+.label, .key {
   display: flex;
   text-align: center;
   align-items: center;
   justify-content: center;
 
-  background-color: var(--mdc-theme-bg-primary);
+  min-width: 40px;
+
+  font-size: 14px;
+  text-transform: capitalize;
 }
 
 .label {
-  text-transform: capitalize;
-  // border-width: 1px 1px 0 0;
+  color: var(--mdc-theme-fg-secondary-text);
+  background-color: var(--mdc-theme-bg-primary);
 }
 
-.shade {
+.key {
   aspect-ratio: 1 / 1;
-  // border-width: 0 1px 1px 0;
 }
-
 
 .color {
-  font-size: 10px;
-  aspect-ratio: 1 / 1;
+  cursor: pointer;
+
+  font-size: 0px;
+
   transition-property: border-radius;
-  transition-duration: material.transition-duration(swift);
   transition-timing-function: material.transition-timing-function(ease-in-out);
+  transition-duration: material.transition-duration(very-fast);
+
+  &:hover {
+    border-radius: 20%;
+  }
 }
 
-.active-color {
+.activated-color.color {
   border-radius: 50%;
+  transition-duration: material.transition-duration(swift); // 丸くなる時に反映
 }
 
 .empty-color {
@@ -63,9 +80,31 @@ $color-count: $simple-color-count + $accent-color-count;
 }
 
 
+.shown-shade {
+  .color {
+    display: flex;
+    justify-content: right;
+    align-items: flex-end;
+    font-size: 12px;
+  }
+  
+  .activated-color {
+    border-bottom-right-radius: 0;
+  }
+}
+
+
 .black {
   color: material.$black-text;
 }
 .white {
   color: material.$white-text;
+}
+
+
+
+@include media-query.mp {
+  .label {
+    font-size: 12px;
+  }
 }
