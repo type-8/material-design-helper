@@ -1,14 +1,11 @@
-@use './app/material/core';
-@use './app/material/Button';
-@use './app/material/tabs';
-
-@use '@material/typography';
+@use './app/material';
 
 
-@include typography.core-styles();
+@include material.styles();
 
 body {
   margin: 0;
+  overflow-y: scroll;
 }
 
 main {
@@ -19,6 +16,26 @@ a, button {
   -webkit-tap-highlight-color: transparent;
 }
 
-svg {
+svg, text {
   fill: currentColor;
+}
+line {
+  stroke: currentColor;
+}
+
+
+@mixin utility-fill-classes($key) {
+  .mdc-theme-fill-#{$key} {
+    fill: material.get-color-value(bg, $key);
+  }
+}
+@include utility-fill-classes(primary);
+@include utility-fill-classes(secondary);
+@include utility-fill-classes(tertiary);
+@include utility-fill-classes(card);
+
+.mdc-theme-fill-divider {
+  $color: material.get-color-value(fg, divider);
+  fill: $color;
+  stroke: $color;
 }
