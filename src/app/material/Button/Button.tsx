@@ -1,4 +1,3 @@
-import { MDCRipple, MDCRippleFoundation } from '@material/ripple';
 import {
   Component,
   createEffect,
@@ -7,13 +6,16 @@ import {
   onMount,
   splitProps
   } from 'solid-js';
+import { MdRippleCore } from '../ripple/core';
+import type { MDCRippleAdapter } from '@material/ripple';
 
 export type MdButtonVariant = 'basic' | 'raised' | 'outlined' | 'icon';
 
 export type MdButtonProps = {
   theme?: string;
   variant?: MdButtonVariant;
-  ripple?: (ripple: MDCRipple) => void;
+  ripple?: (ripple: MdRippleCore) => void;
+  rippleConfig?: Partial<MDCRippleAdapter>;
 } & JSX.IntrinsicElements['button'];
 
 
@@ -22,12 +24,31 @@ const MdButton: Component<MdButtonProps> = (props) => {
 
   // コンポーネントがレンダリングされた後に代入される
   let element: HTMLButtonElement;
-  let ripple: MDCRipple;
+  let ripple: MdRippleCore;
 
+
+  // Button(ripple)がレンダリングされた後、`props.rippleConfig`に変更があった場合に発火し、変更を加える
+  createEffect(() => {
+    const config = props.rippleConfig;
+    if (config && ripple) {
+      ripple.mergeAdapter(config)
+    }
+  });
+
+
+  // マウント後、Rippleを生成する
   onMount(() => {
-    ripple = new MDCRipple(element); // Rippleを生成
+    ripple = new MdRippleCore(element, props.rippleConfig); // Rippleを生成
     props.ripple?.(ripple); // Rippleのインスタンスを共有
   })
+
+
+  // ボタンがDisabledになったとき、不要なCSSクラスが追加されるため、削除
+  createEffect(() => {
+    if (props.disabled) {
+      ripple.root.classList.remove('mdc-ripple-upgraded--background-focused');
+    }
+  });
 
 
   // ボタンの見た目を変更するための状態変数
