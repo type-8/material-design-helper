@@ -1,0 +1,15 @@
+@use '../theme';
+@use '@material/snackbar' with (
+  $fill-color: theme.get-color-value(bg, card),
+  $z-index: 20
+);
+
+@mixin themes {
+  @include snackbar.core-styles;
+
+  .mdc-snackbar {
+    &__label {
+      color: theme.get-color-value(fg, text);
+    }
+  }
+}

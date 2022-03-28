@@ -1,7 +1,7 @@
 @use '../theme';
 
 
-$tab-text-color: var(--mdc-theme-text, theme.$light-text);
+$tab-text-color: var(--mdc-theme-fg-text, theme.$light-text);
 @use '@material/tab' with (
   $text-label-color-default: $tab-text-color,
   $icon-color-default: $tab-text-color
@@ -12,12 +12,14 @@ $tab-text-color: var(--mdc-theme-text, theme.$light-text);
 @use '@material/tab-indicator';
 
 
-@include tab-bar.core-styles();
-@include tab-scroller.core-styles();
-@include tab-indicator.core-styles();
-@include tab.core-styles();
+@mixin themes {
+  @include tab-bar.core-styles();
+  @include tab-scroller.core-styles();
+  @include tab-indicator.core-styles();
+  @include tab.core-styles();
 
 
-.mdc-tab {
-  @include theme.custom-ripple-transition();
+  .mdc-tab {
+    @include theme.custom-ripple-transition();
+  }
 }

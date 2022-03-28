@@ -1,0 +1,41 @@
+@use '@material/checkbox';
+@use '../theme';
+@use '../transition';
+
+
+@mixin themes() {
+  @include checkbox.core-styles;
+
+  .mdc-checkbox {
+    @include theme.custom-ripple-transition();
+
+    &-wrapper {
+      display: inline-flex;
+      align-items: center;
+      vertical-align: middle;
+      white-space: nowrap;
+      margin-right: 12px;
+    }
+
+    &-label {
+      width: 100%;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+
+    &__background {
+      transition-duration: transition.duration(very-fast);
+    }
+
+    &__native-control:checked ~ &__background,
+    &__native-control:indeterminate ~ &__background,
+    &__native-control[data-indeterminate="true"] ~  &__background {
+      transition-duration: transition.duration(swift);
+    }
+
+    &__checkmark {
+      transition-duration: inherit !important;
+    }
+  }
+}

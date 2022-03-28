@@ -1,0 +1,19 @@
+@use '../theme';
+@use '@material/dialog' with (
+  $title-ink-color: theme.get-color-value(fg, text),
+  $z-index: 24
+);
+
+
+@mixin themes {
+  @include dialog.core-styles;
+
+  .mdc-dialog {
+    @include theme.custom-ripple-transition();
+    @include theme.background-color(card);
+
+    & &__content {
+      color: theme.get-color-value(fg, text);
+    }
+  }
+}
