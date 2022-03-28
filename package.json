@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "description": "",
   "scripts": {
-    "start": "node index.js",
+    "start": "node assets/index.af88d60d.js",
     "dev": "vite",
     "build": "vite build",
     "serve": "vite preview"
