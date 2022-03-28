@@ -25,6 +25,7 @@ $duration: (
   swift-linear:       80ms
 ) !default;
 
+
 $timing-function: (
   // fast-out => liner-in
   standard:         cubic-bezier(0.4, 0, 0.2, 1),
@@ -54,6 +55,7 @@ $timing-function: (
   swift-liner:       linear
 ) !default;
 
+
 @function duration($value) {
   $result: map.get($duration, $value);
   @return $result or $value;
@@ -64,8 +66,9 @@ $timing-function: (
   @return $result or $value;
 }
 
+
 // .foo {
-//   transition: transition-value((box-sizing, color)), opacity 160ms ease;;
+//   transition: transition-value((box-shadow, color)), opacity 160ms ease;;
 // }
 @function value($props, $duration: normal, $timing-function: ease-out) {
   $result: '';
