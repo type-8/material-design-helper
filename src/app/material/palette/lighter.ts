@@ -171,7 +171,7 @@ export const MATERIAL_LIGHTER_PALETTE: MaterialPalette = {
       contrast: 'black',
     },
     A700: {
-      color: '#',
+      color: '#e254ff',
       contrast: 'black',
     },
   },
@@ -867,7 +867,7 @@ export const MATERIAL_LIGHTER_PALETTE: MaterialPalette = {
       contrast: 'black',
     },
     A700: {
-      color: 'ff9e40#',
+      color: '#ff9e40',
       contrast: 'black',
     },
   },

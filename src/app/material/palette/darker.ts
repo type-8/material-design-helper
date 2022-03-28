@@ -815,60 +815,60 @@ export const MATERIAL_DARKER_PALETTE: MaterialPalette = {
   },
   orange: {
     50: {
-      color: '#fff3e0',
+      color: '#ccc0ae',
       contrast: 'black',
     },
     100: {
-      color: '#ffe0b2',
+      color: '#cbae82',
       contrast: 'black',
     },
     200: {
-      color: '#ffcc80',
+      color: '#ca9b52',
       contrast: 'black',
     },
     300: {
-      color: '#ffb74d',
+      color: '#c88719',
       contrast: 'black',
     },
     400: {
-      color: '#ffa726',
+      color: '#c77800',
       contrast: 'black',
     },
     500: {
-      color: '#ff9800',
+      color: '#c66900',
       contrast: 'black',
     },
     600: {
-      color: '#fb8c00',
+      color: '#c25e00',
       contrast: 'black',
     },
     700: {
-      color: '#f57c00',
-      contrast: 'black',
+      color: '#bb4d00',
+      contrast: 'white',
     },
     800: {
-      color: '#ef6c00',
-      contrast: 'black',
+      color: '#b53d00',
+      contrast: 'white',
     },
     900: {
-      color: '#e65100',
-      contrast: 'black',
+      color: '#ac1900',
+      contrast: 'white',
     },
     A100: {
-      color: '#ffd180',
+      color: '#caa052',
       contrast: 'black',
     },
     A200: {
-      color: '#ffab40',
+      color: '#c77c02',
       contrast: 'black',
     },
     A400: {
-      color: '#ff9100',
+      color: '#c56200',
       contrast: 'black',
     },
     A700: {
-      color: '#ff6d00',
-      contrast: 'black',
+      color: '#c43c00',
+      contrast: 'white',
     },
   },
   deepOrange: {
