@@ -1,27 +1,90 @@
-$height: 48px;
+@use './header-variables' as *;
+@use './material';
+@use './utils';
 
 
 .host {
+  height: $height + $secondary-height;
+}
+
+.primary, .secondary {
+  position: fixed;
   display: flex;
-  align-items: center;
   justify-content: space-between;
+  width: 100%;
+  z-index: 8;
+  background-color: material.get-color-value(bg, secondary);
+}
 
-
+.primary {
   height: $height;
-  
+
   padding: 0 8px;
-  border-bottom: 2px solid var(--mdc-theme-fg-divider);
+  border-bottom: 2px solid material.get-color-value(fg, divider);
   box-sizing: border-box;
+
+  &-right-actions {
+    overflow-x: auto;
+    overflow-y: hidden;
+    height: $height;
+
+    @include utils.invisible-scrollbar();
+  }
+}
+
+.secondary {
+  top: $height;
+  height: $secondary-height;
+
+  &-right-actions {
+    height: $height;
+    margin-bottom: $bottom-divider-height;
+    flex-shrink: 0;
+  }
 }
 
 
 .h1 {
+  flex-shrink: 0;
+  height: $height;
+  line-height: $height;
+
   font-size: 18px;
   margin: 0 16px;
 }
 
 
+
+.tab-bar {
+  width: auto;
+  overflow-x: auto;
+  overflow-y: hidden;
+
+  & :global {
+    .mdc-tab__text-label, .mdc-button__label {
+      text-transform: initial;
+      // margin-bottom: $bottom-divider-height;
+    }
+  }
+}
+
+
+.bottom-divider {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+
+  width: 100%;
+  height: $bottom-divider-height;
+  background-color: var(--mdc-theme-fg-divider);
+  z-index: -1;
+}
+
+
+
+// Common styles
 .link {
+  display: inline-block;
   text-decoration: none;
 
   &:visited, &:active {
