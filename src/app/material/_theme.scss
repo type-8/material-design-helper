@@ -3,6 +3,7 @@
 // Imports
 @use 'sass:map';
 @use 'sass:meta';
+@use 'sass:list';
 
 @use './palette';
 @use '@material/theme' with (
@@ -30,20 +31,29 @@ $dark-divider:  palette.$white-divider;
 
 $light-foreground: (
   text: $light-text,
-  divider: $light-divider
+  // inverted-text: $dark-text,
+  disabled-text: #00000042,
+  secondary-text: #0000008a,
+  divider: $light-divider,
 );
 
 $dark-foreground: (
   text: $dark-text,
+  // inverted-text: $dark-text,
+  disabled-text: #ffffff4d,
+  secondary-text: #ffffffb3,
   divider: $dark-divider
 );
 
 
 $light-background: (
   base: white,
+  inverted-base: black,
+
   primary: map.get(palette.$grey, 50),
   secondary: map.get(palette.$grey, 100),
   tertiary: map.get(palette.$grey, 300),
+
   card: white, // raised を含む,
 
   text: $light-text
@@ -51,9 +61,12 @@ $light-background: (
 
 $dark-background: (
   base: black,
-  primary: #303030,
-  secondary: map.get(palette.$grey, 900),
-  tertiary: black,
+  inverted-base: white,
+  
+  primary: map.get(palette.$grey, 800),
+  secondary: #303030,
+  tertiary: map.get(palette.$grey, 900),
+
   card: map.get(palette.$grey, 800), // raised を含む,
 
   text: $dark-text
@@ -143,19 +156,26 @@ $dark-color-palette: (
 // @param { 'base' | 'primary' | 'secondary | 'tertiary' | 'card' | 'dark' | 'light' | color } $color
 @mixin background-color($color) {
   @if meta.type-of($color) == color {
-    --mdc-theme-primary:   #{$color};
-    --mdc-theme-secondary: #{$color};
-    --mdc-theme-surface:   #{$color};
+    &, .dark-theme .inverted-theme &,
+    .dark-theme .inverted-theme#{&} {
+      --mdc-theme-primary:   #{$color};
+      --mdc-theme-secondary: #{$color};
+      --mdc-theme-surface:   #{$color};
+    }
+
 
   } @else {
     $_color: map.get($light-background, $color);
+    &, .dark-theme .inverted-theme &,
+    .dark-theme .inverted-theme#{&} {
+      --mdc-theme-primary:    #{$_color};
+      --mdc-theme-secondary:  #{$_color};
+      --mdc-theme-surface:    #{$_color};
+      --mdc-theme-background: #{$_color};
+    }
 
-    --mdc-theme-primary:    #{$_color};
-    --mdc-theme-secondary:  #{$_color};
-    --mdc-theme-surface:    #{$_color};
-    --mdc-theme-background: #{$_color};
 
-    .dark-theme & {
+    .dark-theme &, .inverted-theme &, .inverted-theme#{&} {
       $_color: map.get($dark-background, $color);
 
       --mdc-theme-primary:   #{$_color};
@@ -170,19 +190,26 @@ $dark-color-palette: (
 // @param { 'light' | 'dark' | color } $color
 @mixin text-color($color) {
   @if meta.type-of($color) == color {
-    --mdc-theme-on-primary:   #{$color};
-    --mdc-theme-on-secondary: #{$color};
-    --mdc-theme-on-surface:   #{$color};
+    &, .dark-theme .inverted-theme &,
+    .dark-theme .inverted-theme#{&} {
+      --mdc-theme-on-primary:   #{$color};
+      --mdc-theme-on-secondary: #{$color};
+      --mdc-theme-on-surface:   #{$color};
+    }
 
 
   } @else {
     $_color: if($color == dark, $dark-text, $light-text);
 
-    --mdc-theme-on-primary:   #{$_color};
-    --mdc-theme-on-secondary: #{$_color};
-    --mdc-theme-on-surface:   #{$_color};
+    &, .dark-theme .inverted-theme &,
+    .dark-theme .inverted-theme#{&} {
+      --mdc-theme-on-primary:   #{$_color};
+      --mdc-theme-on-secondary: #{$_color};
+      --mdc-theme-on-surface:   #{$_color};
+    }
+
   
-    .dark-theme & {
+    .dark-theme &, .inverted-theme &, .inverted-theme#{&} {
       $_color: if($color == dark, $light-text, $dark-text);
 
       --mdc-theme-on-primary:   #{$_color};
@@ -218,14 +245,31 @@ $dark-color-palette: (
 // @param { 'light' | 'dark } $theme
 @mixin wrap-theme-selector($theme) {
   @if $theme == dark {
-    $selector: if(&, if(#{&} == ':root', null, &), null);
+    @if #{&} == ':root' {
+      @at-root {
+        .dark-theme,
+        .inverted-theme {
+          @content;
+        }
+      }
 
-    .dark-theme #{$selector} {
-      @content;
+    } @else {
+      $selector: if(&, &, null);
+      .dark-theme #{$selector},
+      .inverted-theme #{$selector} {
+        @content;
+      }
     }
+
 
   } @else {
     @content;
+
+    @at-root {
+      .dark-theme .inverted-theme {
+        @content;
+      }
+    }
   }
 }
 
@@ -242,6 +286,17 @@ $dark-color-palette: (
       }
     }
   }
+}
+@function get-foreground-color($key, $theme) {
+  @return if(
+    $theme == dark,
+    (map.get($dark-foreground,  $key), --mdc-theme-bg-#{$key}),
+    (map.get($light-foreground, $key), --mdc-theme-bg-#{$key})
+  );
+}
+@function get-foreground-color-value($key, $theme: light) {
+  $color: get-foreground-color($key, $theme);
+  @return var(nth($color, 2), nth($color, 1));
 }
 
 
@@ -276,6 +331,36 @@ $dark-color-palette: (
       };
     }
   }
+}
+
+
+$_color-ref: (
+  light: (
+    bg: $light-background,
+    fg: $light-foreground,
+    palette: $light-color-palette,
+  ),
+  dark: (
+    bg: $dark-background,
+    fg: $dark-foreground,
+    palette: $dark-color-palette,
+  )
+);
+@function get-color($theme, $key, $path) {
+  $key: if(background == $key, bg, if(foreground == $key, fg, $key));
+
+  $color: map.get($_color-ref, $theme, $key, $path...);
+  $var-name: --mdc-theme-#{$key};
+
+  @each $name in $path {
+    $var-name: $var-name + '-' + $name;
+  }
+
+  @return ($color, $var-name);
+}
+@function get-color-value($key, $path...) {
+  $color: get-color(light, $key, $path);
+  @return var(nth($color, 2), nth($color, 1));
 }
 
 

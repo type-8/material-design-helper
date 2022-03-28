@@ -1,16 +1,36 @@
 @use 'sass:map';
 @use './theme';
+@use './typography';
+
+@use './Button';
+@use './Checkbox';
+@use './Dialog';
+@use './Snackbar';
+@use './tabs';
 
 
-:root {
-  @include theme.foreground();
-  @include theme.background();
+@mixin root-styles {
+  :root {
+    @include theme.foreground();
+    @include theme.background();
+  }
+
+  @include theme.colors();
+
+  body {
+    color: var(--mdc-theme-fg-text, theme.$light-text);
+    background-color: var(--mdc-theme-bg-primary, white);
+  }
 }
 
-@include theme.colors();
 
+@mixin styles() {
+  @include root-styles;
+  @include typography.core-styles;
 
-body {
-  color: var(--mdc-theme-fg-text, theme.$light-text);
-  background-color: var(--mdc-theme-bg-primary, white);
+  @include Button.themes;
+  @include Checkbox.themes;
+  @include Dialog.themes;
+  @include Snackbar.themes;
+  @include tabs.themes;
 }

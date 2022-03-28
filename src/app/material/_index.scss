@@ -1,4 +1,10 @@
 @forward './theme';
+@forward './typography' as typography-*;
+
+@forward './core';
 
 @forward './transition' show transition;
 @forward './transition' as transition-* hide transition-transition;
+
+@forward '@material/elevation' show elevation;
+@forward '@material/elevation' as elevation-* hide elevation-elevation;
