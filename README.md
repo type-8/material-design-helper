@@ -4,9 +4,11 @@
 <br>
 
 ## マップ
-- Color Palette
-- Approximate Color
-- 名前不詳（近い倍数へ値を変更するもの）
+- Color Tools
+  - Palette
+  - Approximate
+- Functions
+  - Round to Multiple
 
 <br>
 
@@ -24,6 +26,6 @@ npm run dev
 
 
 ### UIコンポーネント
-**`Material Components`**
+**`Material Design Components`**
 
 Docs： https://material.io/develop/web
