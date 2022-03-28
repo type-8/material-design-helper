@@ -1,8 +1,8 @@
 import { Router, useRoutes } from 'solid-app-router';
 import { Component } from 'solid-js';
-import Footer from './Footer';
 import Header from './Header';
 import { routes } from './router';
+import { SecondaryHeaderProvider } from './SecondaryHeader';
 
 
 const App: Component = () => {
@@ -10,13 +10,14 @@ const App: Component = () => {
 
   return (
     <Router>
-      <Header />
+      <SecondaryHeaderProvider>
+        <Header />
 
-      <main>
-        <Routes />
-      </main>
-
-      <Footer />
+        {/* <main class={styles.main}> */}
+        <main>
+          <Routes />
+        </main>
+      </SecondaryHeaderProvider>
     </Router>
   );
 };
