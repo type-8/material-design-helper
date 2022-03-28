@@ -3,10 +3,11 @@
   "version": "0.0.0",
   "description": "",
   "scripts": {
-    "start": "node assets/index.af88d60d.js",
+    "start": "npm run serve",
     "dev": "vite",
     "build": "vite build",
-    "serve": "vite preview"
+    "serve": "vite preview",
+    "heroku-postbuild": "npm run build"
   },
   "license": "MIT",
   "devDependencies": {
