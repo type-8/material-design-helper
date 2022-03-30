@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "description": "",
   "scripts": {
-    "start": "servor . index.html 8080",
+    "start": "servor ./dist index.html 8080",
     "dev": "vite",
     "build": "vite build",
     "serve": "vite preview",
