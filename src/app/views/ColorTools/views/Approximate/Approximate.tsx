@@ -1,23 +1,22 @@
 import { Component, onCleanup } from 'solid-js';
 import baseStyles from '../../ColorTools.module.scss';
-import { ConfigContextProps, getConfigFromLocalStorage, saveConfigFromLocalStorage, useConfig } from '../../Config';
+import { CONFIG_VERSION, ConfigContextProps, getConfigFromLocalStorage, useConfig } from '../../Config';
 
 const CONFIG_LOCAL_STORAGE_KEY = 'color-tools/approximate/config';
 
 const INITIAL_CONFIG: ConfigContextProps = {
-  categories: ['display', 'action'] as any,
-  display: {
-    keys: ['shade'] as any,
-    shade: {
-      label: 'Shade',
-      state: false
-    }
-  },
-  action: {
-    keys: ['copy'] as any,
-    copy: {
-      label: 'Copy',
-      state: true
+  key: CONFIG_LOCAL_STORAGE_KEY,
+  version: CONFIG_VERSION,
+  statesOrders: [
+    ['display', ['shade']],
+    ['action', ['copy']]
+  ],
+  states: {
+    display: {
+      shade: false
+    },
+    action: {
+      copy: true
     }
   }
 };
@@ -25,7 +24,7 @@ const INITIAL_CONFIG: ConfigContextProps = {
 
 const ApproximateColor: Component = () => {
   const [config, setConfig] = useConfig();
-  setConfig(getConfigFromLocalStorage(CONFIG_LOCAL_STORAGE_KEY) || INITIAL_CONFIG);
+  setConfig(getConfigFromLocalStorage(CONFIG_LOCAL_STORAGE_KEY, INITIAL_CONFIG));
 
 
   return (

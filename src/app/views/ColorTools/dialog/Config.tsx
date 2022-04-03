@@ -1,7 +1,7 @@
-import { Component, For } from 'solid-js';
+import { Component, For, Index } from 'solid-js';
 import MdCheckbox from '../../../material/Checkbox/Checkbox';
 import MdDialog, { MdDialogStyles } from '../../../material/Dialog';
-import { useConfig } from '../Config';
+import { saveConfigFromLocalStorage, useConfig } from '../Config';
 import styles from './Config.module.scss';
 
 
@@ -11,46 +11,61 @@ interface Props {
 }
 
 const ConfigDialog: Component<Props> = (props) => {
-  const [config, setConfig] = useConfig();
+  const [getConfig, setConfig] = useConfig();
 
 
-  const onChange = (category: string, key: string, label: string, event: Event) => {
+  const onChange = (category: string, key: string, event: Event) => {
     const state = (event.target as HTMLInputElement).checked;
 
-    setConfig((prev) => ({
-      ...prev,
-      [category]: {
-        ...prev[category],
-        [key]: { label, state }
-      }
-    }));
-  }
+    setConfig((prev) => {
+      // (prev) => ({
+      //   ...prev,
+      //   states: {
+      //     ...prev.states,
+      //     [category]: {
+      //       ...prev[category],
+      //       [key]: state
+      //     }
+      //   }
+      // })
+      prev.states[category][key] = state;
+      return prev;
+    });
+  };
+
+
+  const onClose = (falsy: false) => {
+    const config = getConfig();
+    saveConfigFromLocalStorage(config.key, config);
+    props.onClose(falsy);
+  };
 
 
   return (
-    <MdDialog opened={props.opened} onClose={props.onClose} config={{ trapFocus: () => void 0 }}>
+    <MdDialog opened={props.opened} onClose={onClose} config={{ trapFocus: () => void 0 }}>
       <h2 class={MdDialogStyles.title}>Config</h2>
       <div class={`${styles.content} ${MdDialogStyles.content}`}>
-        <For each={config().categories}>{(category) => {
-          const props = config()[category];
+        <Index each={getConfig().statesOrders}>{(getOrder) => {
+          const config = getConfig();
+          const [category, order] = getOrder();
 
           return (
             <div class={styles.form}>
               <span class={styles.category}>{ category }</span>
               <div>
-                <For each={props.keys}>{(key) => {
-                  const prop = props[key];
+                <Index each={order}>{(getKey) => {
+                  const key = getKey();
 
                   return (
-                    <MdCheckbox checked={prop.state} onChange={onChange.bind(null, category, key, prop.label)} theme="accent">
-                      { prop.label }
+                    <MdCheckbox checked={config.states[category][key]} onChange={onChange.bind(null, category, key)} theme="accent">
+                      { key }
                     </MdCheckbox>
                   );
-                }}</For>
+                }}</Index>
               </div>
             </div>
           )
-        }}</For>
+        }}</Index>
       </div>
     </MdDialog>
   );

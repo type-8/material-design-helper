@@ -1,6 +1,6 @@
 import baseStyles from '../../ColorTools.module.scss';
 import { ColorViewerContextProps, useColorViewer } from '../../ColorViewer';
-import { ConfigContextProps, getConfigFromLocalStorage, saveConfigFromLocalStorage, useConfig } from '../../Config';
+import { CONFIG_VERSION, ConfigContextProps, getConfigFromLocalStorage, useConfig } from '../../Config';
 import CopiedSnackbar, { OpenCopiedSnackbarRef } from '../../snackbar/Copied';
 import { COLOR_ELEMENT_CACHE } from './cache';
 import { createPaletteElement, SelectColor } from './element';
@@ -9,7 +9,6 @@ import {
   Component,
   createEffect,
   observable,
-  onCleanup,
   Show,
   } from 'solid-js';
 import {
@@ -24,34 +23,24 @@ import {
 const CONFIG_LOCAL_STORAGE_KEY = 'color-tools/palette/config';
 
 const INITIAL_CONFIG: ConfigContextProps = {
-  categories: ['theme', 'display', 'action'] as any,
-  theme: {
-    keys: ['default', 'lighter', 'darker'] as any,
-    default: {
-      label: 'Default',
-      state: true
+  key: CONFIG_LOCAL_STORAGE_KEY,
+  version: CONFIG_VERSION,
+  statesOrders: [
+    ['theme', ['default', 'lighter', 'darker']],
+    ['display', ['shade']],
+    ['action', ['copy']]
+  ],
+  states: {
+    theme: {
+      default: true,
+      lighter: true,
+      darker: true
     },
-    lighter: {
-      label: 'Lighter',
-      state: true
+    display: {
+      shade: false
     },
-    darker: {
-      label: 'Darker',
-      state: true
-    }
-  },
-  display: {
-    keys: ['shade'] as any,
-    shade: {
-      label: 'Shade',
-      state: false
-    }
-  },
-  action: {
-    keys: ['copy'] as any,
-    copy: {
-      label: 'Copy',
-      state: true
+    action: {
+      copy: true
     }
   }
 };
@@ -59,7 +48,7 @@ const INITIAL_CONFIG: ConfigContextProps = {
 
 const ColorPalette: Component = () => {
   const [config, setConfig] = useConfig();
-  setConfig(getConfigFromLocalStorage(CONFIG_LOCAL_STORAGE_KEY) || INITIAL_CONFIG);
+  setConfig(getConfigFromLocalStorage(CONFIG_LOCAL_STORAGE_KEY, INITIAL_CONFIG));
 
 
   const openCopiedSnackbar: OpenCopiedSnackbarRef = { ref: null! };
@@ -122,7 +111,7 @@ const ColorPalette: Component = () => {
       });
 
       // 選択中のパレットの色が削除される可能性があるので、変更を監視して対応させる
-      // (なぜか、unsubscribeをしなくても問題なく動作する（しているように見える）)
+      // (なぜか、unsubscribeをしなくても問題なく動作する（しているように見えるだけかも？）)
       observable(colorSignal[0]).subscribe(color => {
         const colorEl = colorElCache.get(colorSignal);
         if (colorEl) {
@@ -140,10 +129,10 @@ const ColorPalette: Component = () => {
 
 
   return (
-    <div class={`${styles.host} ${baseStyles['route-host']}`} classList={{ [styles['shown-shade']]: config().display.shade.state }}>
-      <Show when={config().theme.default.state}>{ createPaletteElement('default', MATERIAL_DEFAULT_PALETTE, selectColor) }</Show>
-      <Show when={config().theme.lighter.state}>{ createPaletteElement('lighter', MATERIAL_LIGHTER_PALETTE, selectColor) }</Show>
-      <Show when={config().theme.darker.state }>{ createPaletteElement('darker',  MATERIAL_DARKER_PALETTE,  selectColor) }</Show>
+    <div class={`${styles.host} ${baseStyles['route-host']}`} classList={{ [styles['shown-shade']]: config().states.display.shade }}>
+      <Show when={config().states.theme.default}>{ createPaletteElement('default', MATERIAL_DEFAULT_PALETTE, selectColor) }</Show>
+      <Show when={config().states.theme.lighter}>{ createPaletteElement('lighter', MATERIAL_LIGHTER_PALETTE, selectColor) }</Show>
+      <Show when={config().states.theme.darker }>{ createPaletteElement('darker',  MATERIAL_DARKER_PALETTE,  selectColor) }</Show>
 
       <CopiedSnackbar open={openCopiedSnackbar} />
     </div>
