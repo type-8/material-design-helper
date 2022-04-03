@@ -1,7 +1,6 @@
 import { Component } from 'solid-js';
 import MdDialog, { MdDialogStyles } from '../../../material/Dialog';
-import { MATERIAL_PALETTE_KEYS } from '../../../material/palette/keys';
-import { COLOR_VIEWER_KEYS, ColorViewerContextProps, useColorViewer } from '../ColorViewer';
+import { ColorViewerContextProps, useColorViewer } from '../ColorViewer';
 import styles from './Exporting.module.scss';
 
 
@@ -185,7 +184,6 @@ const createSassMapText = createMapTextFactory(
   (colorKey, { value }) => (`${colorKey}: (default: (color: ${value.default.color}, contrast: ${value.default.contrast}), lighter: (color: ${value.lighter.color}, contrast: ${value.lighter.contrast}), darker: (color: ${value.darker.color}, contrast: ${value.darker.contrast}))`),
   '$theme: (', ',', ')'
 );
-
 
 
 const createLessText = createMapTextFactory(
