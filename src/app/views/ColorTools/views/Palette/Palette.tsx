@@ -1,21 +1,17 @@
-import {
-  Component,
-  createEffect,
-  createSignal,
-  from,
-  observable,
-  onCleanup,
-  Show,
-  untrack
-  } from 'solid-js';
-import { copyText } from '../../../../utils';
 import baseStyles from '../../ColorTools.module.scss';
 import { ColorViewerContextProps, useColorViewer } from '../../ColorViewer';
-import { ConfigContextProp, getConfigFromLocalStorage, saveConfigFromLocalStorage, useConfig } from '../../Config';
+import { ConfigContextProps, getConfigFromLocalStorage, saveConfigFromLocalStorage, useConfig } from '../../Config';
 import CopiedSnackbar, { OpenCopiedSnackbarRef } from '../../snackbar/Copied';
 import { COLOR_ELEMENT_CACHE } from './cache';
 import { createPaletteElement, SelectColor } from './element';
 import styles from './Palette.module.scss';
+import {
+  Component,
+  createEffect,
+  observable,
+  onCleanup,
+  Show,
+  } from 'solid-js';
 import {
   MaterialPaletteKey,
   MATERIAL_DARKER_PALETTE,
@@ -24,46 +20,46 @@ import {
   } from '../../../../material/palette';
 
 
-type Config = {
-  [key in
-    'default' |
-    'lighter' |
-    'darker' |
-    'shade' |
-    'copy'
-  ]: ConfigContextProp;
-  // animation: boolean;
-  // highlight: boolean;
-};
 
 const CONFIG_LOCAL_STORAGE_KEY = 'color-tools/palette/config';
 
-const ColorPalette: Component = () => {
-  const [config, setConfig] = useConfig<Config>();
-  setConfig(
-    getConfigFromLocalStorage<Config>(CONFIG_LOCAL_STORAGE_KEY) || {
-      default: {
-        state: true,
-        label: 'Default'
-      },
-      lighter: {
-        state: true,
-        label: 'Lighter'
-      },
-      darker: {
-        state: true,
-        label: 'Darker'
-      },
-      shade: {
-        state: false,
-        label: 'Show Shade'
-      },
-      copy: {
-        state: true,
-        label: 'Use Copy'
-      }
+const INITIAL_CONFIG: ConfigContextProps = {
+  categories: ['theme', 'display', 'action'] as any,
+  theme: {
+    keys: ['default', 'lighter', 'darker'] as any,
+    default: {
+      label: 'Default',
+      state: true
+    },
+    lighter: {
+      label: 'Lighter',
+      state: true
+    },
+    darker: {
+      label: 'Darker',
+      state: true
     }
-  );
+  },
+  display: {
+    keys: ['shade'] as any,
+    shade: {
+      label: 'Shade',
+      state: false
+    }
+  },
+  action: {
+    keys: ['copy'] as any,
+    copy: {
+      label: 'Copy',
+      state: true
+    }
+  }
+};
+
+
+const ColorPalette: Component = () => {
+  const [config, setConfig] = useConfig();
+  setConfig(getConfigFromLocalStorage(CONFIG_LOCAL_STORAGE_KEY) || INITIAL_CONFIG);
 
 
   const openCopiedSnackbar: OpenCopiedSnackbarRef = { ref: null! };
@@ -143,16 +139,11 @@ const ColorPalette: Component = () => {
   });
 
 
-  onCleanup(() => {
-    saveConfigFromLocalStorage(CONFIG_LOCAL_STORAGE_KEY, config());
-  });
-
-
   return (
-    <div class={`${styles.host} ${baseStyles['route-host']}`} classList={{ [styles['shown-shade']]: config().shade.state }}>
-      <Show when={config().default.state}>{ createPaletteElement('default', MATERIAL_DEFAULT_PALETTE, selectColor) }</Show>
-      <Show when={config().lighter.state}>{ createPaletteElement('lighter', MATERIAL_LIGHTER_PALETTE, selectColor) }</Show>
-      <Show when={config().darker.state}>{  createPaletteElement('darker',  MATERIAL_DARKER_PALETTE,  selectColor) }</Show>
+    <div class={`${styles.host} ${baseStyles['route-host']}`} classList={{ [styles['shown-shade']]: config().display.shade.state }}>
+      <Show when={config().theme.default.state}>{ createPaletteElement('default', MATERIAL_DEFAULT_PALETTE, selectColor) }</Show>
+      <Show when={config().theme.lighter.state}>{ createPaletteElement('lighter', MATERIAL_LIGHTER_PALETTE, selectColor) }</Show>
+      <Show when={config().theme.darker.state }>{ createPaletteElement('darker',  MATERIAL_DARKER_PALETTE,  selectColor) }</Show>
 
       <CopiedSnackbar open={openCopiedSnackbar} />
     </div>
