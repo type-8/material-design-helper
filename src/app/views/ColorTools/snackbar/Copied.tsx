@@ -42,7 +42,7 @@ const CopiedSnackbar: Component<Props> = (props) => {
     event.preventDefault();
     event.stopPropagation();
 
-    const canCopy = config().action.copy.state;
+    const canCopy = config().states.action.copy;
 
     if (canCopy) {
       setHasOpened(false);
