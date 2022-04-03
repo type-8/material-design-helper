@@ -35,7 +35,6 @@ const MdCheckbox: Component<MdCheckboxProps> = (props) => {
 
 
   createEffect(() => {
-    console.log(checkbox);
     checkbox.checked = !!props.checked;
   });
 
