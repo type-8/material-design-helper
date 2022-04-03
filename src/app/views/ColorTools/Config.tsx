@@ -7,25 +7,32 @@ import {
   } from 'solid-js';
 
 
-export interface ConfigContextProp {
-  state: boolean;
-  label: string;
+export type ConfigContextProps = {
+  // オブジェクトの順番を保証するために必要
+  categories: string[] } & {
+  [category: string]: ConfigContextProp;
 }
 
-export interface ConfigContextProps {
-  [key: string]: ConfigContextProp;
+export type ConfigContextProp = {
+  // オブジェクトの順番を保証するために必要
+  keys: string[] } & {
+  [key: string]: {
+    label: string,
+    state: boolean
+  }
 }
+
 
 const ConfigContext = createContext<Signal<ConfigContextProps>>();
-export const useConfig = <T extends ConfigContextProps = ConfigContextProps>(): Signal<T> => useContext(ConfigContext) as any;
+export const useConfig = (): Signal<ConfigContextProps> => useContext(ConfigContext) as any;
 
 export const ConfigProvider: Component = (props) => (
-  <ConfigContext.Provider value={createSignal({})}>{ props.children }</ConfigContext.Provider>
+  <ConfigContext.Provider value={createSignal({categories:[] as any})}>{ props.children }</ConfigContext.Provider>
 );
 
 
 
-export function getConfigFromLocalStorage<T extends ConfigContextProps = {}>(key: string): T | null {
+export function getConfigFromLocalStorage(key: string): ConfigContextProps | null {
   const displayConfig = localStorage.getItem(key);
 
   return displayConfig
@@ -33,6 +40,6 @@ export function getConfigFromLocalStorage<T extends ConfigContextProps = {}>(key
     : null;
 }
 
-export function saveConfigFromLocalStorage<T extends ConfigContextProps = {}>(key: string, config: T): void {
+export function saveConfigFromLocalStorage(key: string, config: ConfigContextProps): void {
   localStorage.setItem(key, JSON.stringify(config));
 }
