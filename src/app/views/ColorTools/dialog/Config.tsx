@@ -1,4 +1,4 @@
-import { Component, For, Index } from 'solid-js';
+import { Component, Index } from 'solid-js';
 import MdCheckbox from '../../../material/Checkbox/Checkbox';
 import MdDialog, { MdDialogStyles } from '../../../material/Dialog';
 import { saveConfigFromLocalStorage, useConfig } from '../Config';
@@ -16,20 +16,10 @@ const ConfigDialog: Component<Props> = (props) => {
 
   const onChange = (category: string, key: string, event: Event) => {
     const state = (event.target as HTMLInputElement).checked;
-
     setConfig((prev) => {
-      // (prev) => ({
-      //   ...prev,
-      //   states: {
-      //     ...prev.states,
-      //     [category]: {
-      //       ...prev[category],
-      //       [key]: state
-      //     }
-      //   }
-      // })
-      prev.states[category][key] = state;
-      return prev;
+      const config = { ...prev };
+      config.states[category][key] = state;
+      return config;
     });
   };
 
