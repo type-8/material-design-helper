@@ -8,17 +8,13 @@ import {
 
 
 export type ConfigContextProps = {
-  // オブジェクトの順番を保証するために必要
-  categories: string[] } & {
-  [category: string]: ConfigContextProp;
-}
-
-export type ConfigContextProp = {
-  // オブジェクトの順番を保証するために必要
-  keys: string[] } & {
-  [key: string]: {
-    label: string,
-    state: boolean
+  key: string;
+  version: string;
+  statesOrders: [string, string[]][];
+  states: {
+    [categories: string]: {
+      [key: string]: boolean;
+    }
   }
 }
 
@@ -27,19 +23,29 @@ const ConfigContext = createContext<Signal<ConfigContextProps>>();
 export const useConfig = (): Signal<ConfigContextProps> => useContext(ConfigContext) as any;
 
 export const ConfigProvider: Component = (props) => (
-  <ConfigContext.Provider value={createSignal({categories:[] as any})}>{ props.children }</ConfigContext.Provider>
+  <ConfigContext.Provider value={createSignal({key:'', version:'', statesOrders:[], states:{}})}>{ props.children }</ConfigContext.Provider>
 );
 
 
+export const CONFIG_VERSION = '1.0';
 
-export function getConfigFromLocalStorage(key: string): ConfigContextProps | null {
-  const displayConfig = localStorage.getItem(key);
+export function getConfigFromLocalStorage(key: string, initialConfig: ConfigContextProps): ConfigContextProps {
+  const JSONConfig = localStorage.getItem(key);
 
-  return displayConfig
-    ? JSON.parse(displayConfig)
-    : null;
+  if (JSONConfig) {
+    const config = JSON.parse(JSONConfig);
+    return (
+      (typeof config === 'object') && (config.version === CONFIG_VERSION)
+        ? config
+        : saveConfigFromLocalStorage(key, initialConfig)
+    );
+
+  } else {
+    return initialConfig;
+  }
 }
 
-export function saveConfigFromLocalStorage(key: string, config: ConfigContextProps): void {
+export function saveConfigFromLocalStorage(key: string, config: ConfigContextProps): ConfigContextProps {
   localStorage.setItem(key, JSON.stringify(config));
+  return config;
 }
