@@ -34,7 +34,7 @@ const ColorTools: Component = () => {
       <MdButton
         class={rootHeaderStyles.button}
         onClick={() => setHasOpenedExportingDialog(true)}
-        disabled={!primaryColorSignal[0]()}
+        disabled={!(primaryColorSignal[0]() || secondaryColorSignal[0]())}
       >
         Export
       </MdButton>
