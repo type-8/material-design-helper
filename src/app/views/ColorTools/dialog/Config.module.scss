@@ -2,18 +2,18 @@
   display: flex;
   flex-direction: column;
   padding-left: 12px;
-  // padding-bottom: 4px;
 }
 
 .form  {
   margin-bottom: 8px;
+  text-transform: capitalize;
 }
 
 .category {
   display: block;
   margin: 8px 0 2px;
-  // font-size: 14px;
-  text-transform: capitalize;
+  font-size: 14px;
+  font-weight: 500;
   color: var(--mdc-theme-fg-secondary-text);
 }
 
