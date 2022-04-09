@@ -1,0 +1,20 @@
+.test {
+  background-color: pink;
+}
+
+.input-form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.input {
+  padding: 8px;
+  box-sizing: border-box;
+  outline: none;
+
+  font-size: 18px;
+  font-weight: bold;
+  font-family: 'Roboto Mono';
+  text-align: center;
+}
