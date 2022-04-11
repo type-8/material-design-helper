@@ -1,3 +1,5 @@
+// CIE76
+
 type RGB = [number, number, number];
 const WHITE_RELATIVE_RGB: RGB = [1, 1, 1];
 const BLACK_RELATIVE_RGB: RGB = [0, 0, 0];
@@ -12,8 +14,8 @@ const n6d29p2 = n6d29 * n6d29;
 /** @value 0.008856451679035631 */
 const n6d29p3 = n6d29p2 * n6d29;
 
-/** @value 23.361111111111107 */
-const n29d6 = Math.pow(29 / 6, 2);
+/** @value (JS)23.361111111111107 => (JAVA)23.36111111111111 */
+const n29d6 = 23.36111111111111;
 
 /** @value 0.13793103448275862 */
 const n4d29 = 4 / 29;
@@ -35,7 +37,7 @@ function getZ(r: number, g: number, b: number): number {
 }
 
 function rgb2xyz([r, g, b]: RGB): RGB {
-  return [getX(r, g, b), getY(r, g, b), getZ(r, b, b)];
+  return [getX(r, g, b), getY(r, g, b), getZ(r, g, b)];
 }
 
 
@@ -46,7 +48,7 @@ function calcTriangle(t: number): number {
 }
 
 const WHITE_DIFFERENCE = rgb2xyz(WHITE_RELATIVE_RGB);
-const xyz2lab = (xyz: RGB): RGB => {
+function xyz2lab(xyz: RGB): RGB {
 // function xyz2lab(xyz: RGB): RGB {
   const wd = WHITE_DIFFERENCE;
   const xxn = calcTriangle(xyz[0] / wd[0]);
