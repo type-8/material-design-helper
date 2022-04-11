@@ -20,7 +20,7 @@ function getZ(r: number, g: number, b: number): number {
 }
 
 function rgb2xyz([r, g, b]: RGB): RGB {
-  return [getX(r, g, b), getY(r, g, b), getZ(r, b, b)];
+  return [getX(r, g, b), getY(r, g, b), getZ(r, g, b)];
 }
 
 
