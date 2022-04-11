@@ -1,6 +1,6 @@
 import { createContext, Signal, useContext } from 'solid-js';
 import {
-  MaterialColor,
+  MaterialColorStatus,
   MaterialPaletteKey,
   MaterialPaletteKeys,
   MaterialPaletteLabels,
@@ -18,7 +18,7 @@ export interface ColorViewerContextProps {
   label: MaterialPaletteLabels[number];
   shade: MaterialPaletteShades[number];
   value: {
-    [key in MaterialPaletteKey]: MaterialColor;
+    [key in MaterialPaletteKey]: MaterialColorStatus;
   }
 }
 
