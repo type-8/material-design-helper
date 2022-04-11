@@ -21,23 +21,31 @@ const n4d29 = 4 / 29;
 /** @value 0.3333333333333333 */
 const n1d3 = 1 / 3;
 
-
+/** @value 6.283185307179586 */
 const pi2 = Math.PI * 2;
 
+/** @value 6103515625 */
 const n25p7 = Math.pow(25, 7);
 
+/** @value 0.017453292519943295 */
 const rad = Math.PI / 180;
 
+/** @value 0.10471975511965978 */
 const rad6 = 6 * rad;
 
+/** @value 0.4363323129985824 */
 const rad25 = 25 * rad;
 
+/** @value 0.5235987755982988 */
 const rad30 = 30 * rad;
 
+/** @value 1.0471975511965976 */
 const rad60 = 60 * rad;
 
+/** @value 1.0995574287564276 */
 const rad63 = 63 * rad;
 
+/** @value 4.799655442984406 */
 const rad275 = 275 * rad;
 
 
@@ -82,7 +90,7 @@ function xyz2lab(xyz: RGB): RGB {
     116 * yyn - 16,
     500 * (xxn - yyn),
     200 * (yyn - zzn)
-  ]
+  ];
 };
 
 function rgb2lab(rgb: RGB): RGB {
@@ -93,11 +101,11 @@ function hypot(a: number, b: number): number {
   return Math.sqrt(a * a + b * b);
 }
 
-function pow2(a: number){
+function pow2(a: number) {
   return a * a;
 }
 
-function pow7(a: number){
+function pow7(a: number) {
   return a * a * a * a * a * a * a;
 }
 
@@ -153,10 +161,10 @@ function calcDifference(src: RGB, dest: RGB): number {
   }
 
   const tt = 1
-          - 0.17 * Math.cos(hhbd - rad30)
-          + 0.24 * Math.cos(2 * hhbd)
-          + 0.32 * Math.cos(3 * hhbd + rad6)
-          - 0.20 * Math.cos(4 * hhbd - rad63);
+           - 0.17 * Math.cos(hhbd - rad30)
+           + 0.24 * Math.cos(2 * hhbd)
+           + 0.32 * Math.cos(3 * hhbd + rad6)
+           - 0.20 * Math.cos(4 * hhbd - rad63);
 
   const lbs50p2 = pow2(lb - 50);
   const ssl = 1 + (0.015 * lbs50p2) / Math.sqrt(20 + lbs50p2);
@@ -165,12 +173,12 @@ function calcDifference(src: RGB, dest: RGB): number {
 
   const rrt = -2 * Math.sqrt(cbd7 / (cbd7 + n25p7)) * Math.sin(rad60 * Math.exp(-pow2((hhbd - rad275) / rad25)));
 
-  const d = pow2(dld / (1 * ssl))
-          + pow2(dcd / (1 * ssc))
-          + pow2(dhhd / (1 * ssh))
-          + rrt * (dcd / (1 * ssc)) * (dhhd / (1 * ssh));
+  const dd = pow2(dld / (1 * ssl))
+           + pow2(dcd / (1 * ssc))
+           + pow2(dhhd / (1 * ssh))
+           + rrt * (dcd / (1 * ssc)) * (dhhd / (1 * ssh));
 
-  return Math.sqrt(d);
+  return Math.sqrt(dd);
 }
 
 function calcDistance(src: RGB, dest: RGB): number {
@@ -188,6 +196,6 @@ console.log(dis1, dis2); // 0.24093259394687105 0.5480665080781703
 
 
 export {
-  MAX_DIFFERENCE as LAB_EUCLIDEAN_DISTANCE_MAX,
+  MAX_DIFFERENCE as CIE2000_DISTANCE_MAX,
   calcDistance as calcLABEuclideanDistance
 };
