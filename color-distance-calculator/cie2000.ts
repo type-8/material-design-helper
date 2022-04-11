@@ -49,12 +49,6 @@ const rad63 = 63 * rad;
 const rad275 = 275 * rad;
 
 
-// 定数は省略
-// const k1 = 1;
-// const kc = 1;
-// const kh = 1;
-
-
 function getX(r: number, g: number, b: number): number {
   return 0.4124 * r + 0.3576 * g + 0.1805 * b;
 }
@@ -109,7 +103,11 @@ function pow7(a: number) {
   return a * a * a * a * a * a * a;
 }
 
+
 const MAX_DIFFERENCE = calcDifference(WHITE_RELATIVE_RGB, BLACK_RELATIVE_RGB);
+const kl = 1;
+const kc = 1;
+const kh = 1;
 
 function calcDifference(src: RGB, dest: RGB): number {
   const [l1, a1, b1] = rgb2lab(src);
@@ -173,10 +171,10 @@ function calcDifference(src: RGB, dest: RGB): number {
 
   const rrt = -2 * Math.sqrt(cbd7 / (cbd7 + n25p7)) * Math.sin(rad60 * Math.exp(-pow2((hhbd - rad275) / rad25)));
 
-  const dd = pow2(dld / (1 * ssl))
-           + pow2(dcd / (1 * ssc))
-           + pow2(dhhd / (1 * ssh))
-           + rrt * (dcd / (1 * ssc)) * (dhhd / (1 * ssh));
+  const dd = pow2(dld / (kl * ssl))
+           + pow2(dcd / (kc * ssc))
+           + pow2(dhhd / (kh * ssh))
+           + rrt * (dcd / (kc * ssc)) * (dhhd / (kh * ssh));
 
   return Math.sqrt(dd);
 }
