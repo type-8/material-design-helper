@@ -1,31 +1,6 @@
 @use 'sass:list';
 @use 'sass:meta';
 
-
-// @param {column, row} $key
-@mixin repeat-grid-template($key, $count-and-gap, $values...) {
-  $count: list.nth($count-and-gap, 1);
-  $gap: if(meta.type-of($count-and-gap) == list, list.nth($count-and-gap, 2), null);
-
-  grid-template-#{$key}s: repeat($count, $values...);
-  #{$key}-gap: $gap;
-
-  $ie-values: ();
-  @for $i from 1 through $count {
-    @each $value in $values {
-      $ie-values: list.append($ie-values, $value);
-
-      @if $gap {
-        $ie-values: list.append($ie-values, $gap);
-      }
-    }
-  }
-
-  -ms-grid-#{$key}: $ie-values;
-}
-
-
-
 @mixin invisible-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;

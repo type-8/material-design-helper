@@ -1,7 +1,8 @@
-import { Navigate, RouteDataFunc, RouteProps } from 'solid-app-router';
-import { Component, JSX, lazy } from 'solid-js';
+import { Navigate } from 'solid-app-router';
+import type { RouteDataFunc } from 'solid-app-router';
+import { lazy } from 'solid-js';
+import type { Component, JSX } from 'solid-js';
 import ColorTools from './views/ColorTools';
-
 
 export type Route = {
   path: string;
@@ -16,9 +17,7 @@ export type Route = {
   preload?: () => void;
 });
 
-
 const defaultRedirectComponent = () => <Navigate href="/color-tools/palette" />;
-
 
 export const routes: Route[] = [
   {
@@ -27,17 +26,17 @@ export const routes: Route[] = [
     children: [
       {
         path: '/palette',
-        component: lazy(() => import('./views/ColorTools/views/Palette'))
+        component: lazy(() => import('./views/ColorTools/views/Palette')),
       },
       {
         path: '/approximate',
-        component: lazy(() => import('./views/ColorTools/views/Approximate'))
+        component: lazy(() => import('./views/ColorTools/views/Approximate')),
       },
       {
         path: '/',
-        component: defaultRedirectComponent
-      }
-    ]
+        component: defaultRedirectComponent,
+      },
+    ],
   },
   // {
   //   path: '/functions',
@@ -46,12 +45,11 @@ export const routes: Route[] = [
 
   {
     path: '/',
-    component: defaultRedirectComponent
-  }
+    component: defaultRedirectComponent,
+  },
 
   // {
   //   path: "/*all",
   //   component: lazy(() => import("/pages/[...all].js"))
   // }
 ];
-

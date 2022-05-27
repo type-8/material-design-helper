@@ -1,22 +1,16 @@
+import { Index, type JSX } from 'solid-js';
 import {
   MATERIAL_PALETTE_ACCENT_SHADES,
   MATERIAL_PALETTE_LABELS,
   MATERIAL_PALETTE_SHADES,
   MATERIAL_PALETTE_SIMPLE_SHADES,
-  MaterialPalette,
-  MaterialPaletteKey,
-  MaterialPaletteLabels,
-  MaterialPaletteShades
-  } from '../../../../material/palette';
-import { PALETTE_ELEMENT_CACHE } from './cache';
+  type MaterialPalette,
+  type MaterialPaletteKey,
+  type MaterialPaletteLabels,
+  type MaterialPaletteShades,
+} from '../../../../material/palette';
 import styles from './Palette.module.scss';
-import {
-  Index,
-  JSX,
-} from 'solid-js';
-
-
-
+import { PALETTE_ELEMENT_CACHE } from './cache';
 
 export type SelectColor = (
   key: MaterialPaletteKey,
@@ -26,10 +20,39 @@ export type SelectColor = (
   event: Event
 ) => void;
 
+type CreateColorElement = (
+  label: MaterialPaletteLabels[number],
+  colorRef: MaterialPalette['red'],
+  selectColor: (label: MaterialPaletteLabels[number], shade: MaterialPaletteShades[number], color: string, event: Event) => void,
+  getShade: () => MaterialPaletteShades[number],
+) => JSX.Element;
+
 type CreatePaletteElement = (key: MaterialPaletteKey, palette: MaterialPalette, selectColor: SelectColor) => JSX.Element;
+
+// red => Red
+// deepOrange => Deep Orange
+function capitalizeLabel(label: string): string {
+  return label.replace(/[A-Z]/, (substring) => ` ${substring}`);
+}
+
+/** @description `createPaletteElement`内部で使用される関数。色を表すDOMを生成する。 */
+const createColorElement: CreateColorElement = (label, colorRef, selectColor, getShade) => {
+  const shade = getShade();
+  const { hex, contrast } = colorRef[shade]!;
+
+  return (
+    <div onClick={(event) => selectColor(label, shade, hex, event)}
+      class={/* @once */`${styles.color} ${styles[contrast]}`}
+      style={/* @once */`background-color:${hex}`}
+    >
+      {shade}
+    </div>
+  );
+};
+
 /**
  * @description パレットを表示するDOMを生成する。一度生成したDOMは保存され、`ColorTools`Componentが破棄されるまで保持される。
- * @param selectColor 子要素がクリックされたときに発火する
+ * @param  selectColor 子要素がクリックされたときに発火する
  */
 export const createPaletteElement: CreatePaletteElement = (key, palette, selectColor) => {
   const cache = PALETTE_ELEMENT_CACHE;
@@ -55,14 +78,13 @@ export const createPaletteElement: CreatePaletteElement = (key, palette, selectC
             ? <Index each={MATERIAL_PALETTE_ACCENT_SHADES}>{createPaletteColor}</Index>
             : <div class={styles['empty-color']}></div>;
 
-
           return (
             <>
               <div class={styles.label}>{ capitalizeLabel(label) }</div>
               <Index each={MATERIAL_PALETTE_SIMPLE_SHADES}>{createPaletteColor}</Index>
               { accentColorEls }
             </>
-          )
+          );
         }}</Index>
       </div>
     );
@@ -71,35 +93,4 @@ export const createPaletteElement: CreatePaletteElement = (key, palette, selectC
   }
 
   return paletteElement;
-}
-
-
-// red => Red
-// deepOrange => Deep Orange
-function capitalizeLabel(label: string): string {
-  return label.replace(/[A-Z]/, (substring) => ' ' + substring);
-}
-
-
-
-type CreateColorElement = (
-  label: MaterialPaletteLabels[number],
-  colorRef: MaterialPalette['red'],
-  selectColor: (label: MaterialPaletteLabels[number], shade: MaterialPaletteShades[number], color: string, event: Event) => void,
-  getShade: () => MaterialPaletteShades[number],
-) => JSX.Element;
-
-/** @description `createPaletteElement`内部で使用される関数。色を表すDOMを生成する。 */
-const createColorElement: CreateColorElement = (label, colorRef, selectColor, getShade) => {
-  const shade = getShade();
-  const { color, contrast } = colorRef[shade]!;
-
-  return (
-    <div onClick={(event) => selectColor(label, shade, color, event)}
-      class={/*@once*/`${styles.color} ${styles[contrast]}`}
-      style={/*@once*/`background-color:${color}`}
-    >
-      {shade}
-    </div>
-  )
-}
+};

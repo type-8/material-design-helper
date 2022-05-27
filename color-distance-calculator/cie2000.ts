@@ -1,6 +1,6 @@
-type RGB = [number, number, number];
-const WHITE_RELATIVE_RGB: RGB = [1, 1, 1];
-const BLACK_RELATIVE_RGB: RGB = [0, 0, 0];
+type ABC = [number, number, number];
+const WHITE_RGB_RATE: ABC = [1, 1, 1];
+const BLACK_RGB_RATE: ABC = [0, 0, 0];
 
 
 /** @value 0.20689655172413793 */
@@ -61,7 +61,7 @@ function getZ(r: number, g: number, b: number): number {
   return (0.0193 * r) + (0.1192 * g) + (0.9505 * b);
 }
 
-function rgb2xyz([r, g, b]: RGB): RGB {
+function rgb2xyz([r, g, b]: ABC): ABC {
   return [getX(r, g, b), getY(r, g, b), getZ(r, g, b)];
 }
 
@@ -72,10 +72,11 @@ function calcTriangle(t: number): number {
     : n1d3 * n29d6 * t + n4d29;
 }
 
-const WHITE_DIFFERENCE = rgb2xyz(WHITE_RELATIVE_RGB);
-function xyz2lab(xyz: RGB): RGB {
-// function xyz2lab(xyz: RGB): RGB {
-  const wd = WHITE_DIFFERENCE;
+const WHITE_XYZ_RATE = rgb2xyz(WHITE_RGB_RATE);
+
+function xyz2lab(xyz: ABC): ABC {
+// function xyz2lab(xyz: ABC): ABC {
+  const wd = WHITE_XYZ_RATE;
   const xxn = calcTriangle(xyz[0] / wd[0]);
   const yyn = calcTriangle(xyz[1] / wd[1]);
   const zzn = calcTriangle(xyz[2] / wd[2]);
@@ -87,7 +88,7 @@ function xyz2lab(xyz: RGB): RGB {
   ];
 };
 
-function rgb2lab(rgb: RGB): RGB {
+function rgb2lab(rgb: ABC): ABC {
   return xyz2lab(rgb2xyz(rgb));
 }
 
@@ -104,12 +105,12 @@ function pow7(a: number) {
 }
 
 
-const MAX_DIFFERENCE = calcDifference(WHITE_RELATIVE_RGB, BLACK_RELATIVE_RGB);
+const MAX_DIFFERENCE = calcDifference(WHITE_RGB_RATE, BLACK_RGB_RATE);
 const kl = 1;
 const kc = 1;
 const kh = 1;
 
-function calcDifference(src: RGB, dest: RGB): number {
+function calcDifference(src: ABC, dest: ABC): number {
   const [l1, a1, b1] = rgb2lab(src);
   const [l2, a2, b2] = rgb2lab(dest);
 
@@ -179,14 +180,14 @@ function calcDifference(src: RGB, dest: RGB): number {
   return Math.sqrt(dd);
 }
 
-function calcDistance(src: RGB, dest: RGB): number {
+function calcDistance(src: ABC, dest: ABC): number {
   return calcDifference(src, dest) / MAX_DIFFERENCE;  
 }
 
 
-const color1: RGB = [1, 0, 0];
-const color2: RGB = [64 / 255, 0, 0];
-const color3: RGB = [1, 191 / 255, 0];
+const color1: ABC = [1, 0, 0];
+const color2: ABC = [64 / 255, 0, 0];
+const color3: ABC = [1, 191 / 255, 0];
 
 const dis1 = calcDistance(color1, color2);
 const dis2 = calcDistance(color1, color3);

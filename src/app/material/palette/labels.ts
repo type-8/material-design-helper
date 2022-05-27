@@ -19,5 +19,5 @@ export const MATERIAL_PALETTE_LABELS: MaterialPaletteLabels = [
   'deepOrange',
   'brown',
   'grey',
-  'blueGrey'
+  'blueGrey',
 ];

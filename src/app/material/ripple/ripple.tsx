@@ -1,6 +1,6 @@
 import { MDCRipple } from '@material/ripple';
 import { createEffect } from 'solid-js';
-import { Directive } from '../../directive';
+import type { Directive } from '../../directive';
 
 export interface MdRippleProps {
   disabled?: boolean;
@@ -20,29 +20,24 @@ const mdRipple: Directive<MdRippleProps | boolean> = (element, accessor) => {
     props.ripple?.(ripple); // rippleのインスタンスを共有する
   }
 
-
   let prevTheme: string | undefined;
 
-
-  /**
-   * @description Rippleを有効にした際に、`element`変数へスタイルを追加・削除する
-   */
+  /** Rippleを有効にした際に、`element`変数へスタイルを追加・削除する */
   const activate = (theme?: string) => {
     ripple.activate();
 
-    const classList = element.classList;
+    const { classList } = element;
 
     if (prevTheme) {
-      classList.remove(baseClassName + '--' + prevTheme);
+      classList.remove(`${baseClassName}--${prevTheme}`);
     }
 
     if (theme) {
-      classList.add(baseClassName + '--' + theme);
+      classList.add(`${baseClassName}--${theme}`);
     }
 
     prevTheme = theme;
   };
-
 
   // `props`に変更があった場合、それに合わせスタイルを変更する
   createEffect(() => {
@@ -62,10 +57,10 @@ const mdRipple: Directive<MdRippleProps | boolean> = (element, accessor) => {
       default: {
         props.disabled
           ? ripple.deactivate()
-          : activate(props.theme)
+          : activate(props.theme);
       }
     }
   });
-}
-export default mdRipple;
+};
 
+export default mdRipple;

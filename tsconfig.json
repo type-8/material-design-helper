@@ -1,13 +1,15 @@
 {
+  "include": ["src/**/*", ".eslintrc.*"],
   "compilerOptions": {
-    "strict": true,
     "target": "ESNext",
     "module": "ESNext",
     "moduleResolution": "node",
+    "strict": true,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
+    "importsNotUsedAsValues": "error",
     "jsx": "preserve",
     "jsxImportSource": "solid-js",
-    "types": ["vite/client"]
+    "types": ["vite/client", "src/**/*.d.ts"]
   }
 }

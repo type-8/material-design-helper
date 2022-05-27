@@ -1,13 +1,12 @@
+import {
+  createSignal,
+  type Component,
+  type JSXElement,
+} from 'solid-js';
 import MdButton from '../../../material/Button';
 import MdSnackbar from '../../../material/Snackbar/Snackbar';
 import { copyText } from '../../../utils';
 import { useConfig } from '../Config';
-import {
-  Component,
-  createSignal,
-  JSXElement,
-  } from 'solid-js';
-
 
 export type OpenCopiedSnackbarRef = {
   ref: (text: string, event: Event) => Promise<JSXElement | false>
@@ -25,18 +24,15 @@ const CopiedSnackbar: Component<Props> = (props) => {
   let messageHead = '';
   let messageBody = '';
 
-
   const onSuccess = () => {
     messageHead = 'Copied';
     setHasOpened(true);
-  }
-
+  };
 
   const onFail = () => {
     messageHead = 'Failed to copy';
     setHasOpened(true);
-  }
-
+  };
 
   props.open.ref = async (text, event) => {
     event.preventDefault();
@@ -56,8 +52,7 @@ const CopiedSnackbar: Component<Props> = (props) => {
     }
 
     return false;
-  }
-
+  };
 
   return (<>
     <MdSnackbar
@@ -66,6 +61,6 @@ const CopiedSnackbar: Component<Props> = (props) => {
       message={<span>{ messageHead } <b>"{ messageBody }"</b></span>}
       action={<MdButton>Close</MdButton>}
     />
-  </>)
-}
+  </>);
+};
 export default CopiedSnackbar;

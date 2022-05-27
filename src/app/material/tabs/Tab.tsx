@@ -1,10 +1,8 @@
-import type { Component, JSX } from 'solid-js';
+import type { Component, FlowProps, JSX } from 'solid-js';
 
+export type MdTabBarProps = FlowProps & JSX.IntrinsicElements['button'];
 
-export type MdTabBarProps = {
-} & JSX.IntrinsicElements['button'];
-
-const MdTab: Component = (props: MdTabBarProps) => {
+const MdTab: Component<MdTabBarProps> = (props) => {
   const { children, ...attrs } = props;
 
   return (

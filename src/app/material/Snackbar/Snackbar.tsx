@@ -1,12 +1,11 @@
-import { Component, createEffect, JSX, Show } from 'solid-js';
+import type { MDCSnackbarAdapter } from '@material/snackbar';
+import { createEffect, Show } from 'solid-js';
+import type { Component, JSX } from 'solid-js';
 import { Portal } from 'solid-js/web';
 import { MdSnackbarCore } from './core';
-import type { MDCSnackbarAdapter } from "@material/snackbar";
-
 
 // Snackbarを重複して表示させないために用いる
 let displayedSnackbar: MdSnackbarCore | null = null;
-
 
 export interface MdSnackbarProps {
   opened: boolean;
@@ -22,20 +21,18 @@ const MdSnackbar: Component<MdSnackbarProps> = (props) => {
   let element: HTMLElement | null;
   let snackbar: MdSnackbarCore | null;
 
-
   // Snackbarが出現しているときに`props.config`に変更があった場合
   createEffect(() => {
-    const config = props.config;
+    const { config } = props;
     if (config && snackbar) {
       snackbar.mergeAdapter(config);
     }
   });
 
-
   const onClose = () => {
     props.onClose(false);
     element = snackbar = displayedSnackbar = null;
-  }
+  };
 
   // `props.opened`が`true`となり、ダイアログを開く処理
   createEffect(() => {
@@ -49,8 +46,6 @@ const MdSnackbar: Component<MdSnackbarProps> = (props) => {
     }
   });
 
-
-
   return (
     <Show when={props.opened}>
       <Portal>
@@ -62,6 +57,6 @@ const MdSnackbar: Component<MdSnackbarProps> = (props) => {
         </aside>
       </Portal>
     </Show>
-  )
-}
+  );
+};
 export default MdSnackbar;

@@ -1,7 +1,7 @@
-import { MDCTabBar, MDCTabBarAdapter } from '@material/tab-bar';
-import { MergeAdapter, mergeAdapter } from '../utils';
+import { MDCTabBar, type MDCTabBarAdapter } from '@material/tab-bar';
+import { mergeAdapter, type MergeAdapter } from '../utils';
 
-export class MdTabBarCore extends MDCTabBar {
+class MdTabBarCore extends MDCTabBar {
   mergeAdapter = mergeAdapter.bind(this) as MergeAdapter<MDCTabBarAdapter>;
 
   constructor(element: Element, adopter?: Partial<MDCTabBarAdapter>) {
@@ -10,3 +10,5 @@ export class MdTabBarCore extends MDCTabBar {
     if (adopter) this.mergeAdapter(adopter);
   }
 }
+
+export default MdTabBarCore;

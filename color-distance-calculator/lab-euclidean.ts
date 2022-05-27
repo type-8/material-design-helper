@@ -1,8 +1,8 @@
 // CIE76
 
 type RGB = [number, number, number];
-const WHITE_RELATIVE_RGB: RGB = [1, 1, 1];
-const BLACK_RELATIVE_RGB: RGB = [0, 0, 0];
+const WHITE_RGB_RATE: RGB = [1, 1, 1];
+const BLACK_RGB_RATE: RGB = [0, 0, 0];
 
 
 /** @value 0.20689655172413793 */
@@ -47,10 +47,10 @@ function calcTriangle(t: number): number {
     : n1d3 * n29d6 * t + n4d29;
 }
 
-const WHITE_DIFFERENCE = rgb2xyz(WHITE_RELATIVE_RGB);
+const WHITE_XYZ_RATE = rgb2xyz(WHITE_RGB_RATE);
+
 function xyz2lab(xyz: RGB): RGB {
-// function xyz2lab(xyz: RGB): RGB {
-  const wd = WHITE_DIFFERENCE;
+  const wd = WHITE_XYZ_RATE;
   const xxn = calcTriangle(xyz[0] / wd[0]);
   const yyn = calcTriangle(xyz[1] / wd[1]);
   const zzn = calcTriangle(xyz[2] / wd[2]);
@@ -67,29 +67,6 @@ function rgb2lab(rgb: RGB): RGB {
 }
 
 
-// function lab2xyz([l, a, b]: RGB): RGB {
-//   const y = (l + 16 ) / 116;
-//   const x = y + a / 500;
-//   const z = y - b / 200;
-//   const wd = WHITE_DIFFERENCE;
-
-//   return [
-//     x > n6d29
-//       ? wd[0] * x * x * x
-//       : (x - n16d116) * 3 * n6d29p2 * wd[0],
-//     y > n6d29
-//       ? wd[1] * y * y * y
-//       : (y - n16d116) * 3 * n6d29p2 * wd[1],
-//     x > n6d29
-//       ? wd[2] * z * z * z
-//       : (z - n16d116) * 3 * n6d29p2 * wd[2]
-//   ];
-// }
-// function lab2rgb(lab: RGB): RGB {
-//   return xyz2rgb(lab2xyz(lab));
-// }
-
-
 function calcDifference(src: RGB, dest: RGB) {
   src = rgb2lab(src);
   dest = rgb2lab(dest);
@@ -102,7 +79,9 @@ function calcDifference(src: RGB, dest: RGB) {
 }
 
 /** @value 100.0 */
-const MAX_DIFFERENCE = calcDifference(WHITE_RELATIVE_RGB, BLACK_RELATIVE_RGB);
+const MAX_DIFFERENCE = calcDifference(WHITE_RGB_RATE, BLACK_RGB_RATE);
+console.log(MAX_DIFFERENCE);
+
 function calcDistance(src: RGB, dest: RGB) {
   return calcDifference(src, dest) / MAX_DIFFERENCE;
 }

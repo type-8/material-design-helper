@@ -1,12 +1,24 @@
-import { Component, createSignal, onCleanup, onMount } from 'solid-js';
+import { createSignal } from 'solid-js';
+import type { Component } from 'solid-js';
 import MdButton from '../../../../material/Button';
-import { MATERIAL_DEFAULT_PALETTE } from '../../../../material/palette';
 import MdSnackbar from '../../../../material/Snackbar/Snackbar';
+import {
+  MATERIAL_DEFAULT_PALETTE,
+  MATERIAL_PALETTE_LABELS,
+  MATERIAL_PALETTE_SHADES,
+  MATERIAL_PALETTE_SIMPLE_SHADES,
+} from '../../../../material/palette';
 import baseStyles from '../../ColorTools.module.scss';
-import { CONFIG_VERSION, ConfigContextProps, getConfigFromLocalStorage, useConfig } from '../../Config';
+import {
+  CONFIG_VERSION,
+  getConfigFromLocalStorage,
+  useConfig,
+  type ConfigContextProps,
+} from '../../Config';
 import styles from './Approximate.module.scss';
-import { ApproximationWorkerData } from './interface';
+import type { WorkerData } from './calc/interface';
 
+// import './_update-material-palette';
 
 const CONFIG_LOCAL_STORAGE_KEY = 'color-tools/approximate/config';
 
@@ -15,20 +27,19 @@ const INITIAL_CONFIG: ConfigContextProps = {
   version: CONFIG_VERSION,
   statesOrders: [
     ['display', ['shade']],
-    ['action', ['copy']]
+    ['action', ['copy']],
   ],
   states: {
     display: {
-      shade: false
+      shade: false,
     },
     action: {
-      copy: true
-    }
-  }
+      copy: true,
+    },
+  },
 };
 
 const SUPPORTED_WORKER = !!window.Worker;
-
 
 const ApproximateColor: Component = () => {
   const [config, setConfig] = useConfig();
@@ -39,25 +50,29 @@ const ApproximateColor: Component = () => {
   const calculateColor = (event: SubmitEvent) => {
     event.preventDefault();
 
-    // if () {
-    // }
-
     if (SUPPORTED_WORKER) {
-      const worker = new Worker(new URL('./worker.ts', import.meta.url));
+      const worker = new Worker(new URL('./calc/worker.ts', import.meta.url));
 
-      worker.postMessage({});
-      // worker.postMessage({  } as ApproximationWorkerData);
+      worker.postMessage({
+        rgb: [255, 235, 238],
+        type: 'cie2000',
+        palettes: [MATERIAL_DEFAULT_PALETTE],
+        labels: MATERIAL_PALETTE_LABELS,
+        shades: MATERIAL_PALETTE_SHADES,
+        simpleShades: MATERIAL_PALETTE_SIMPLE_SHADES,
+        multithread: false,
+      } as WorkerData);
 
       worker.addEventListener('message', (event) => {
-        const data = event.data;
+        const { data } = event;
         console.log('returned data', data);
 
         worker.terminate();
-      })
-
-
+      });
     } else {
-      setHasOpenedAlert("Approximation Calculator is not supported on your browser");
+      setHasOpenedAlert(
+        'Approximation Calculator is not supported on your browser',
+      );
     }
   };
 

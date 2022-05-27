@@ -1,9 +1,9 @@
-import { Component, Index } from 'solid-js';
+import type { Component } from 'solid-js';
+import { Index } from 'solid-js';
 import MdCheckbox from '../../../material/Checkbox/Checkbox';
 import MdDialog, { MdDialogStyles } from '../../../material/Dialog';
 import { saveConfigFromLocalStorage, useConfig } from '../Config';
 import styles from './Config.module.scss';
-
 
 interface Props {
   opened: boolean;
@@ -12,7 +12,6 @@ interface Props {
 
 const ConfigDialog: Component<Props> = (props) => {
   const [getConfig, setConfig] = useConfig();
-
 
   const onChange = (category: string, key: string, event: Event) => {
     const state = (event.target as HTMLInputElement).checked;
@@ -23,13 +22,11 @@ const ConfigDialog: Component<Props> = (props) => {
     });
   };
 
-
   const onClose = (falsy: false) => {
     const config = getConfig();
     saveConfigFromLocalStorage(config.key, config);
     props.onClose(falsy);
   };
-
 
   return (
     <MdDialog opened={props.opened} onClose={onClose} config={{ trapFocus: () => void 0 }}>
@@ -54,12 +51,11 @@ const ConfigDialog: Component<Props> = (props) => {
                 }}</Index>
               </div>
             </div>
-          )
+          );
         }}</Index>
       </div>
     </MdDialog>
   );
-}
-
+};
 
 export default ConfigDialog;

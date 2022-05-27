@@ -1,34 +1,32 @@
 import { Outlet } from 'solid-app-router';
-import { Component, createSignal, onCleanup, Suspense } from 'solid-js';
+import { createSignal, onCleanup, Suspense } from 'solid-js';
+import type { Component } from 'solid-js';
 import rootHeaderStyles from '../../Header.module.scss';
-import MdButton from '../../material/Button';
 import { useSecondaryHeader } from '../../SecondaryHeader';
+import MdButton from '../../material/Button';
 import { RoutePath } from '../../utils';
 import styles from './ColorTools.module.scss';
-import { ColorViewerSignal, PrimaryColorViewerContext, SecondaryColorViewerContext, SelectedColorViewerContext } from './ColorViewer';
+import { PrimaryColorViewerContext, SecondaryColorViewerContext, SelectedColorViewerContext } from './ColorViewer';
+import type { ColorViewerSignal } from './ColorViewer';
 import ColorViewer from './ColorViewer/ColorViewer';
 import { ConfigProvider } from './Config';
 import ConfigDialog from './dialog/Config';
 import ExportingDialog from './dialog/Exporting';
 import { COLOR_ELEMENT_CACHE, PALETTE_ELEMENT_CACHE } from './views/Palette/cache';
 
-
-
 const ColorTools: Component = () => {
   const [hasOpenedConfigDialog, setHasOpenedConfigDialog] = createSignal(false);
   const [hasOpenedExportingDialog, setHasOpenedExportingDialog] = createSignal(false);
 
-
-  const primaryColorSignal:   ColorViewerSignal = createSignal(null);
+  const primaryColorSignal: ColorViewerSignal = createSignal(null);
   const secondaryColorSignal: ColorViewerSignal = createSignal(null);
-
 
   // SecondaryHeader の値をセット
   useSecondaryHeader()[1]({
     routePath: new RoutePath(
       ['palette', 'approximate'],
       ['Palette', 'Approximate'],
-      'color-tools'
+      'color-tools',
     ),
     rightActions: <>
       <MdButton
@@ -40,15 +38,13 @@ const ColorTools: Component = () => {
       </MdButton>
 
       <MdButton class={rootHeaderStyles.button} onClick={() => setHasOpenedConfigDialog(true)}>Config</MdButton>
-    </>
+    </>,
   });
-
 
   onCleanup(() => {
     PALETTE_ELEMENT_CACHE.clear();
     COLOR_ELEMENT_CACHE.clear();
   });
-
 
   return (<>
     <div class={styles.body}>

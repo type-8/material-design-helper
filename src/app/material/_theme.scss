@@ -152,7 +152,7 @@ $dark-color-palette: (
 );
 
 
-// @description 背景色用のCSS変数を設定する
+// 背景色用のCSS変数を設定する
 // @param { 'base' | 'primary' | 'secondary | 'tertiary' | 'card' | 'dark' | 'light' | color } $color
 @mixin background-color($color) {
   @if meta.type-of($color) == color {
@@ -186,7 +186,7 @@ $dark-color-palette: (
 }
 
 
-// @description 文字色用のCSS変数を設定する
+// 文字色用のCSS変数を設定する
 // @param { 'light' | 'dark' | color } $color
 @mixin text-color($color) {
   @if meta.type-of($color) == color {
@@ -274,7 +274,7 @@ $dark-color-palette: (
 }
 
 
-// @description `foreground map`にある変数をcss変数として定義する
+// `foreground map`にある変数をcss変数として定義する
 // @param { 'light' | 'dark' | 'both' | null } $theme
 @mixin foreground($theme: null) {
   $foreground-map: wrap-theme-map($theme, $light-foreground, $dark-foreground);
@@ -300,7 +300,7 @@ $dark-color-palette: (
 }
 
 
-// @description `background map`にある変数をcss変数として定義する
+// `background map`にある変数をcss変数として定義する
 // @param { 'light' | 'dark' | 'both' | null } $theme
 @mixin background($theme: null) {
   $background-map: wrap-theme-map($theme, $light-background, $dark-background);
@@ -315,7 +315,7 @@ $dark-color-palette: (
 }
 
 
-// @description MDCの面倒なthemingを一括で済ませる関数
+// MDCの面倒なthemingを一括で済ませる関数
 // @param { 'light' | 'dark' | 'both' | null } $theme
 @mixin colors($theme: null) {
   $palette-map: wrap-theme-map($theme, $light-color-palette, $dark-color-palette);

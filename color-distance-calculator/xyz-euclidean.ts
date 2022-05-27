@@ -1,11 +1,10 @@
 type RGB = [number, number, number];
-const WHITE_RELATIVE_RGB: RGB = [1, 1, 1];
-const BLACK_RELATIVE_RGB: RGB = [0, 0, 0];
+const WHITE_RGB_RATE: RGB = [1, 1, 1];
+const BLACK_RGB_RATE: RGB = [0, 0, 0];
 
 
 /** @value 1.7576607323371596 */
-const MAX_DIFFERENCE = calcDifference(WHITE_RELATIVE_RGB, BLACK_RELATIVE_RGB);
-
+const MAX_DIFFERENCE = calcDifference(WHITE_RGB_RATE, BLACK_RGB_RATE);
 
 function getX(r: number, g: number, b: number): number {
   return 0.4124 * r + 0.3576 * g + 0.1805 * b;

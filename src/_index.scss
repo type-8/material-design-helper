@@ -1,6 +1,5 @@
 @use './app/material';
 
-
 @include material.styles();
 
 body {
@@ -22,7 +21,6 @@ svg, text {
 line {
   stroke: currentColor;
 }
-
 
 @mixin utility-fill-classes($key) {
   .mdc-theme-fill-#{$key} {

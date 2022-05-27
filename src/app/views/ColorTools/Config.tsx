@@ -1,11 +1,12 @@
 import {
-  Component,
   createContext,
   createSignal,
+  useContext,
+} from 'solid-js';
+import type {
   Signal,
-  useContext
-  } from 'solid-js';
-
+  FlowComponent,
+} from 'solid-js';
 
 export type ConfigContextProps = {
   key: string;
@@ -16,16 +17,16 @@ export type ConfigContextProps = {
       [key: string]: boolean;
     }
   }
-}
-
+};
 
 const ConfigContext = createContext<Signal<ConfigContextProps>>();
 export const useConfig = (): Signal<ConfigContextProps> => useContext(ConfigContext) as any;
 
-export const ConfigProvider: Component = (props) => (
-  <ConfigContext.Provider value={createSignal({key:'', version:'', statesOrders:[], states:{}})}>{ props.children }</ConfigContext.Provider>
+export const ConfigProvider: FlowComponent = (props) => (
+  <ConfigContext.Provider value={createSignal({
+    key: '', version: '', statesOrders: [], states: {},
+  })}>{ props.children }</ConfigContext.Provider>
 );
-
 
 export const CONFIG_VERSION = '1.0';
 
@@ -34,18 +35,18 @@ export function getConfigFromLocalStorage(key: string, initialConfig: ConfigCont
 
   if (JSONConfig) {
     const config = JSON.parse(JSONConfig);
+
+    const saveConfigToLocalStorage = () => {
+      localStorage.setItem(key, JSON.stringify(initialConfig));
+      return initialConfig;
+    };
+
     return (
       (typeof config === 'object') && (config.version === CONFIG_VERSION)
         ? config
-        : saveConfigFromLocalStorage(key, initialConfig)
+        : saveConfigToLocalStorage()
     );
-
-  } else {
-    return initialConfig;
   }
-}
 
-export function saveConfigFromLocalStorage(key: string, config: ConfigContextProps): ConfigContextProps {
-  localStorage.setItem(key, JSON.stringify(config));
-  return config;
+  return initialConfig;
 }

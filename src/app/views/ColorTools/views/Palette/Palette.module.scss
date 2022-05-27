@@ -19,15 +19,13 @@ $label-count: 19;
 
 
 .palette {
-  display: -ms-grid;
   display: grid;
 
-  @include utils.repeat-grid-template('column', ($color-count + 1, 1px), 1fr);
-  @include utils.repeat-grid-template('row',    ($label-count + 1, 1px), 1fr);
+  grid-template-columns: repeat($color-count + 1, 1fr);
+  grid-template-rows: repeat($label-count + 1, 1fr);
+  gap: 1px;
 
   align-items: stretch;
-
-  // margin: 0 1px 1px 0;
 
   content-visibility: auto;
 }

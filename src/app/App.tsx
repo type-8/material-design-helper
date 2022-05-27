@@ -1,9 +1,8 @@
 import { Router, useRoutes } from 'solid-app-router';
-import { Component } from 'solid-js';
+import type { Component } from 'solid-js';
 import Header from './Header';
-import { routes } from './router';
 import { SecondaryHeaderProvider } from './SecondaryHeader';
-
+import { routes } from './router';
 
 const App: Component = () => {
   const Routes = useRoutes(routes);
@@ -12,8 +11,6 @@ const App: Component = () => {
     <Router>
       <SecondaryHeaderProvider>
         <Header />
-
-        {/* <main class={styles.main}> */}
         <main>
           <Routes />
         </main>

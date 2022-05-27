@@ -1,6 +1,6 @@
 type RGB = [number, number, number];
-const WHITE_RELATIVE_RGB: RGB = [1, 1, 1];
-const BLACK_RELATIVE_RGB: RGB = [0, 0, 0];
+const WHITE_RGB_RATE: RGB = [1, 1, 1];
+const BLACK_RGB_RATE: RGB = [0, 0, 0];
 
 
 /** @value 0.20689655172413793 */
@@ -50,10 +50,10 @@ function calcTriangle(t: number): number {
     : n1d3 * n29d6 * t + n4d29;
 }
 
-const WHITE_DIFFERENCE = rgb2xyz(WHITE_RELATIVE_RGB);
+const WHITE_XYZ_RATE = rgb2xyz(WHITE_RGB_RATE);
 function xyz2lab(xyz: RGB): RGB {
 // function xyz2lab(xyz: RGB): RGB {
-  const wd = WHITE_DIFFERENCE;
+  const wd = WHITE_XYZ_RATE;
   const xxn = calcTriangle(xyz[0] / wd[0]);
   const yyn = calcTriangle(xyz[1] / wd[1]);
   const zzn = calcTriangle(xyz[2] / wd[2]);
@@ -80,3 +80,5 @@ function pow2(a: number){
 function pow7(a: number){
   return a * a * a * a * a * a * a;
 }
+
+export {};

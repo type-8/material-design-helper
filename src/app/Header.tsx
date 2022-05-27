@@ -1,30 +1,23 @@
-import { MDCTabBar } from '@material/tab-bar';
+import type { MDCTabBar } from '@material/tab-bar';
 import { Link, useLocation } from 'solid-app-router';
+import {
+  createEffect, createSignal, Index, Show,
+} from 'solid-js';
+import type { Component } from 'solid-js';
 import styles from './Header.module.scss';
+import { useSecondaryHeader } from './SecondaryHeader';
 import MdButton from './material/Button';
 import MdTab from './material/tabs/Tab';
 import MdTabBar from './material/tabs/TabBar';
-import { useSecondaryHeader } from './SecondaryHeader';
 import { RoutePath } from './utils';
-import {
-  Component,
-  createEffect,
-  createSelector,
-  createSignal,
-  Index,
-  Show,
-  } from 'solid-js';
-
-
 
 const Header: Component = () => {
   const routePath = new RoutePath(
     ['color-tools', 'functions'],
-    ['Color Tools', 'Functions']
+    ['Color Tools', 'Functions'],
   );
 
-  const [_isActiveRoutePathIndex, setIsActiveRoutePathIndex] = createSignal<number>(null!);
-  const isActiveRoutePathIndex = createSelector(_isActiveRoutePathIndex);
+  const [isActiveRoutePathIndex, setIsActiveRoutePathIndex] = createSignal<number>(null!);
 
   const [tabBar, setTabBar] = createSignal<MDCTabBar>();
 
@@ -32,7 +25,7 @@ const Header: Component = () => {
   const [secondaryHeader] = useSecondaryHeader();
 
   createEffect(() => {
-    const pathname = location.pathname;
+    const { pathname } = location;
 
     // `pathname`と`routePath`に代入されている、いずれかのパスと一致した場合、`setIsActiveRoutePathIndex(i)`が発火する
     routePath.checkPathnameMatches(pathname, setIsActiveRoutePathIndex);
@@ -40,25 +33,25 @@ const Header: Component = () => {
     const tabBarRef = tabBar();
     const secondaryHeaderRef = secondaryHeader();
     if (tabBarRef && secondaryHeaderRef) {
-      // `pathname`と`secondaryHeaderRef.routePath`に代入されている、いずれかのパスと一致した場合、`tabBarRef.activateTab(i)`が発火する
-      secondaryHeaderRef.routePath.checkPathnameMatches(pathname, tabBarRef.activateTab.bind(tabBarRef));
-    } 
+      // `pathname`と`secondaryHeaderRef.routePath`に代入されているいずれかのパスと一致した場合、
+      // `tabBarRef.activateTab(i)`が発火する
+      secondaryHeaderRef.routePath
+        .checkPathnameMatches(pathname, tabBarRef.activateTab.bind(tabBarRef));
+    }
   });
-
 
   // <body>の`class`を切り替えることで、テーマを切り替える
   const toggleTheme = () => document.body.classList.toggle('dark-theme');
 
-
   return (
     <header class={styles.host}>
       <section class={styles.primary}>
-        <h1 class='mdc-typography--headline6' className={styles.h1}>Material Design Helper</h1>
+        <h1 class={`mdc-typography--headline6 ${styles.h1}`}>Material Design Helper</h1>
 
         <div class={styles['primary-right-actions']}>
           <Index each={routePath.names}>{(pathname, index) => (
             <Link class={styles.link} href={pathname()}>
-              <MdButton class={styles.button} classList={{'mdc-accent': isActiveRoutePathIndex(index)}}>
+              <MdButton class={styles.button} classList={{ 'mdc-accent': isActiveRoutePathIndex() === index }}>
                 { routePath.labels[index] }
               </MdButton>
             </Link>
@@ -75,10 +68,10 @@ const Header: Component = () => {
           </a>
         </div>
       </section>
-      
+
       <Show when={secondaryHeader()}>{({ routePath, rightActions }) => (
         <section class={styles.secondary}>
-          <MdTabBar className={styles['tab-bar']} tabBar={setTabBar}>
+          <MdTabBar class={styles['tab-bar']} tabBar={setTabBar}>
             <Index each={routePath.names}>{(pathname, index) => (
               <Link class={styles.link} href={pathname()}>
                 <MdTab>{ routePath.labels[index] }</MdTab>

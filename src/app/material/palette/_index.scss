@@ -29,14 +29,14 @@ $red: (
     200: $black-text,
     300: $black-text,
     400: $black-text,
-    500: $white-text,
-    600: $white-text,
+    500: $black-text,
+    600: $black-text,
     700: $white-text,
     800: $white-text,
     900: $white-text,
     A100: $black-text,
-    A200: $white-text,
-    A400: $white-text,
+    A200: $black-text,
+    A400: $black-text,
     A700: $white-text
   )
 );
@@ -130,14 +130,14 @@ $pink: (
     200: $black-text,
     300: $black-text,
     400: $black-text,
-    500: $white-text,
+    500: $black-text,
     600: $white-text,
     700: $white-text,
     800: $white-text,
     900: $white-text,
     A100: $black-text,
-    A200: $white-text,
-    A400: $white-text,
+    A200: $black-text,
+    A400: $black-text,
     A700: $white-text
   )
 );
@@ -229,7 +229,7 @@ $purple: (
     50: $black-text,
     100: $black-text,
     200: $black-text,
-    300: $white-text,
+    300: $black-text,
     400: $white-text,
     500: $white-text,
     600: $white-text,
@@ -237,8 +237,8 @@ $purple: (
     800: $white-text,
     900: $white-text,
     A100: $black-text,
-    A200: $white-text,
-    A400: $white-text,
+    A200: $black-text,
+    A400: $black-text,
     A700: $white-text
   )
 );
@@ -330,7 +330,7 @@ $deep-purple: (
     50: $black-text,
     100: $black-text,
     200: $black-text,
-    300: $white-text,
+    300: $black-text,
     400: $white-text,
     500: $white-text,
     600: $white-text,
@@ -432,7 +432,7 @@ $indigo: (
     50: $black-text,
     100: $black-text,
     200: $black-text,
-    300: $white-text,
+    300: $black-text,
     400: $white-text,
     500: $white-text,
     600: $white-text,
@@ -440,7 +440,7 @@ $indigo: (
     800: $white-text,
     900: $white-text,
     A100: $black-text,
-    A200: $white-text,
+    A200: $black-text,
     A400: $white-text,
     A700: $white-text
   )
@@ -535,14 +535,14 @@ $blue: (
     200: $black-text,
     300: $black-text,
     400: $black-text,
-    500: $white-text,
-    600: $white-text,
+    500: $black-text,
+    600: $black-text,
     700: $white-text,
     800: $white-text,
     900: $white-text,
     A100: $black-text,
-    A200: $white-text,
-    A400: $white-text,
+    A200: $black-text,
+    A400: $black-text,
     A700: $white-text
   )
 );
@@ -636,15 +636,15 @@ $light-blue: (
     200: $black-text,
     300: $black-text,
     400: $black-text,
-    500: $white-text,
-    600: $white-text,
-    700: $white-text,
+    500: $black-text,
+    600: $black-text,
+    700: $black-text,
     800: $white-text,
     900: $white-text,
     A100: $black-text,
     A200: $black-text,
     A400: $black-text,
-    A700: $white-text
+    A700: $black-text
   )
 );
 
@@ -737,7 +737,7 @@ $cyan: (
     200: $black-text,
     300: $black-text,
     400: $black-text,
-    500: $white-text,
+    500: $black-text,
     600: $white-text,
     700: $white-text,
     800: $white-text,
@@ -838,8 +838,8 @@ $teal: (
     200: $black-text,
     300: $black-text,
     400: $black-text,
-    500: $white-text,
-    600: $white-text,
+    500: $black-text,
+    600: $black-text,
     700: $white-text,
     800: $white-text,
     900: $white-text,
@@ -940,8 +940,8 @@ $green: (
     300: $black-text,
     400: $black-text,
     500: $black-text,
-    600: $white-text,
-    700: $white-text,
+    600: $black-text,
+    700: $black-text,
     800: $white-text,
     900: $white-text,
     A100: $black-text,
@@ -1042,8 +1042,8 @@ $light-green: (
     400: $black-text,
     500: $black-text,
     600: $black-text,
-    700: $white-text,
-    800: $white-text,
+    700: $black-text,
+    800: $black-text,
     900: $white-text,
     A100: $black-text,
     A200: $black-text,
@@ -1246,7 +1246,7 @@ $yellow: (
     600: $black-text,
     700: $black-text,
     800: $black-text,
-    900: $black-text,
+    900: $white-text,
     A100: $black-text,
     A200: $black-text,
     A400: $black-text,
@@ -1545,14 +1545,14 @@ $deep-orange: (
     200: $black-text,
     300: $black-text,
     400: $black-text,
-    500: $white-text,
-    600: $white-text,
-    700: $white-text,
-    800: $white-text,
+    500: $black-text,
+    600: $black-text,
+    700: $black-text,
+    800: $black-text,
     900: $white-text,
     A100: $black-text,
     A200: $black-text,
-    A400: $white-text,
+    A400: $black-text,
     A700: $white-text
   )
 );
@@ -1644,7 +1644,7 @@ $brown: (
     50: $black-text,
     100: $black-text,
     200: $black-text,
-    300: $white-text,
+    300: $black-text,
     400: $white-text,
     500: $white-text,
     600: $white-text,
@@ -1805,10 +1805,6 @@ $darker-grey: (
   700: #373737,
   800: #1b1b1b,
   900: #000000,
-  // A100: ,
-  // A200: ,
-  // A400: ,
-  // A700: ,
   contrast: (
     50: $black-text,
     100: $black-text,
@@ -1820,10 +1816,6 @@ $darker-grey: (
     700: $white-text,
     800: $white-text,
     900: $white-text
-    // A100: ,
-    // A200: ,
-    // A400: ,
-    // A700: 
   )
 );
 $darker-gray: $darker-grey;
@@ -1850,8 +1842,8 @@ $blue-grey: (
     100: $black-text,
     200: $black-text,
     300: $black-text,
-    400: $white-text,
-    500: $white-text,
+    400: $black-text,
+    500: $black-text,
     600: $white-text,
     700: $white-text,
     800: $white-text,

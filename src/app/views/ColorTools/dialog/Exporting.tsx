@@ -1,21 +1,30 @@
-import { Component } from 'solid-js';
+import type { Component } from 'solid-js';
 import MdDialog, { MdDialogStyles } from '../../../material/Dialog';
-import { ColorViewerContextProps, useColorViewer } from '../ColorViewer';
+import { useColorViewer } from '../ColorViewer';
 import styles from './Exporting.module.scss';
-
+import {
+  createJavaScriptText, createJSONText, createLessText, createSassMapText, createSCSSMapText,
+} from './create-map-text';
+import type { CreateMapText } from './create-map-text';
 
 interface Props {
   opened: boolean;
   onClose: (opened: false) => void;
 }
 
+type DownloadMapText = (
+  createMapText: CreateMapText,
+  prefix: string,
+  extension : string,
+  type: string,
+) => void;
+
 const ExportingDialog: Component<Props> = (props) => {
   const primaryColor = useColorViewer.primary()[0];
   const secondaryColor = useColorViewer.secondary()[0];
 
-
-  /** @description <a>を作り、クリックの動作を用いてファイルをダウンロードさせる */
-  const download = (createMapText: CreateMapText, prefix: string, extension : string, type: string) => {
+  /** <a>を作り、クリックの動作を用いてファイルをダウンロードさせる */
+  const download: DownloadMapText = (createMapText, prefix, extension, type) => {
     const anchor = document.createElement('a');
 
     const mapText = createMapText(primaryColor(), secondaryColor());
@@ -33,8 +42,7 @@ const ExportingDialog: Component<Props> = (props) => {
 
     URL.revokeObjectURL(url);
     props.onClose(false);
-  }
-
+  };
 
   return (
     <MdDialog opened={props.opened} onClose={props.onClose} config={{ trapFocus: () => void 0 }}>
@@ -48,7 +56,7 @@ const ExportingDialog: Component<Props> = (props) => {
           <span class={styles.label}>JSON</span>
           <div class={styles.overlay}></div>
         </div>
-  
+
         <div
           class={styles.card}
           onClick={() => download(createJavaScriptText, '', 'js', 'text/javascript')}
@@ -95,112 +103,6 @@ const ExportingDialog: Component<Props> = (props) => {
         </div>
       </div>
     </MdDialog>
-  )
-}
-export default ExportingDialog;
-
-
-
-type ColorRef = ColorViewerContextProps | null;
-type CreateMapText = (primaryColor: ColorRef, secondaryColor: ColorRef) => string;
-type CreateMapTextFactory = (createContent: (colorKey: 'primary' | 'secondary', colorRef: NonNullable<ColorRef>) => string, head: string, divider: string, foot: string) => CreateMapText;
-
-const createMapTextFactory: CreateMapTextFactory = (createContent, head, divider, foot) => {
-  return (primaryColor, secondaryColor) => (
-    (primaryColor && secondaryColor)
-      ? head + createContent('primary', primaryColor) + divider + createContent('secondary', secondaryColor) + foot
-      
-      : primaryColor
-        ? head + createContent('primary', primaryColor) + foot
-        
-        : secondaryColor
-          ? head + createContent('secondary', secondaryColor) + foot
-          : head + foot
   );
 };
-
-
-const createJSONText = createMapTextFactory(
-  (colorKey, { value }) => (
-`  "${colorKey}": {
-    "default": {
-      "color": "${value.default.color}",
-      "contrast": "${value.default.contrast}"
-    },
-    "lighter": {
-      "color": "${value.lighter.color}",
-      "contrast": "${value.lighter.contrast}"
-    },
-    "darker": {
-      "color": "${value.darker.color}",
-      "contrast": "${value.darker.contrast}"
-    }
-  }`),
-  '{\n', ',\n', '\n}'
-);
-
-
-const createJavaScriptText = createMapTextFactory(
-  (colorKey, { value }) => (
-`  ${colorKey}: {
-    default: {
-      color: '${value.default.color}',
-      contrast: '${value.default.contrast}'
-    },
-    lighter: {
-      color: '${value.lighter.color}',
-      contrast: '${value.lighter.contrast}'
-    },
-    darker: {
-      color: '${value.darker.color}',
-      contrast: '${value.darker.contrast}'
-    }
-  }`),
-  'const theme = {\n', ',\n', '\n};'
-);
-
-
-const createSCSSMapText = createMapTextFactory(
-  (colorKey, { value }) => (
-`  ${colorKey}: (
-    default: (
-      color: ${value.default.color},
-      contrast: ${value.default.contrast}
-    ),
-    lighter: (
-      color: ${value.lighter.color},
-      contrast: ${value.lighter.contrast}
-    ),
-    darker: (
-      color: ${value.darker.color},
-      contrast: ${value.darker.contrast}
-    )
-  )`),
-  '$theme: (\n', ',\n', '\n);'
-);
-
-
-const createSassMapText = createMapTextFactory(
-  (colorKey, { value }) => (`${colorKey}: (default: (color: ${value.default.color}, contrast: ${value.default.contrast}), lighter: (color: ${value.lighter.color}, contrast: ${value.lighter.contrast}), darker: (color: ${value.darker.color}, contrast: ${value.darker.contrast}))`),
-  '$theme: (', ',', ')'
-);
-
-
-const createLessText = createMapTextFactory(
-  (colorKey, { value }) => (
-`  @${colorKey}: {
-    @default: {
-      color: ${value.default.color};
-      contrast: ${value.default.contrast};
-    };
-    @lighter: {
-      color: ${value.lighter.color};
-      contrast: ${value.lighter.contrast};
-    };
-    @darker: {
-      color: ${value.darker.color};
-      contrast: ${value.darker.contrast};
-    };
-  };`),
-  '@theme: {\n', '\n', '\n};'
-);
+export default ExportingDialog;

@@ -1,13 +1,11 @@
-import { Component, createEffect, Show } from 'solid-js';
+import type { MDCDialogAdapter } from '@material/dialog';
+import type { FlowComponent } from 'solid-js';
+import { createEffect, Show } from 'solid-js';
 import { Portal } from 'solid-js/web';
 import { MdDialogCore } from './core';
-import type { MDCDialogAdapter } from '@material/dialog';
-
-
 
 // Dialogを重複して表示させないために用いる
 let displayedDialog: MdDialogCore | null = null;
-
 
 export interface MdDialogProps {
   opened: boolean;
@@ -15,23 +13,22 @@ export interface MdDialogProps {
   config?: Partial<MDCDialogAdapter>;
 }
 
-const MdDialog: Component<MdDialogProps> = (props) => {
+const MdDialog: FlowComponent<MdDialogProps> = (props) => {
   let element: HTMLDivElement | null;
   let dialog: MdDialogCore | null;
 
   // Dialogが出現しているときに`props.config`に変更があった場合
   createEffect(() => {
-    const config = props.config;
+    const { config } = props;
     if (config && dialog) {
       dialog.mergeAdapter(config);
     }
   });
 
-
   const onClose = () => {
     props.onClose(false);
     element = dialog = displayedDialog = null;
-  }
+  };
 
   // `props.opened`が`true`となり、ダイアログを開く処理
   createEffect(() => {
@@ -44,7 +41,6 @@ const MdDialog: Component<MdDialogProps> = (props) => {
       dialog.listen('MDCDialog:closed', onClose);
     }
   });
-
 
   return (
     <Show when={props.opened}>
@@ -60,14 +56,12 @@ const MdDialog: Component<MdDialogProps> = (props) => {
       </Portal>
     </Show>
   );
-}
+};
 export default MdDialog;
-
-
 
 export const MdDialogStyles = {
   title: 'mdc-dialog__title',
   content: 'mdc-dialog__content',
   actions: 'mdc-dialog__actions',
-  button: 'mdc-dialog__button'
+  button: 'mdc-dialog__button',
 };

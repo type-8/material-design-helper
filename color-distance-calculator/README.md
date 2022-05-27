@@ -15,12 +15,14 @@ npm install -g typescript ts-node
 「rgbの相対値」・「rbgの相対値からxyzに変換した値」・「rbgの相対値からxyzに変換した値をlabに変換した値」の３つを用意する。
 
 ```ts
-interface ColorRef {
-  color: string,
-  contrast: string,
-  rgb: [number, number, number],
-  xyz: [number, number, number],
-  lab: [number, number, number]
+interface ColorStatus {
+  color: string;
+  contrast: string;
+  rate: {
+    rgb: [number, number, number];
+    xyz: [number, number, number];
+    lab: [number, number, number];
+  }
 }
 ```
 

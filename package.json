@@ -1,32 +1,37 @@
 {
   "name": "material-design-helper",
   "version": "0.0.0",
+  "license": "MIT",
   "description": "",
   "scripts": {
-    "start": "node src/server.js",
     "dev": "vite",
     "build": "vite build",
-    "serve": "vite preview",
-    "heroku-prebuild": "npm run build"
-  },
-  "license": "MIT",
-  "devDependencies": {
-    "sass": "^1.49.7",
-    "typescript": "^4.5.5",
-    "vite": "^2.7.13",
-    "vite-plugin-solid": "^2.2.5"
+    "serve": "vite preview"
   },
   "dependencies": {
-    "@material/button": "^13.0.0",
-    "@material/checkbox": "^13.0.0",
-    "@material/dialog": "^13.0.0",
-    "@material/elevation": "^13.0.0",
-    "@material/icon-button": "^13.0.0",
-    "@material/ripple": "^13.0.0",
-    "@material/snackbar": "^13.0.0",
-    "@material/tab-bar": "^13.0.0",
-    "express": "^4.17.3",
-    "solid-app-router": "^0.2.1",
-    "solid-js": "^1.3.3"
+    "@material/button": "^14.0.0",
+    "@material/checkbox": "^14.0.0",
+    "@material/dialog": "^14.0.0",
+    "@material/elevation": "^14.0.0",
+    "@material/icon-button": "^14.0.0",
+    "@material/ripple": "^14.0.0",
+    "@material/snackbar": "^14.0.0",
+    "@material/tab-bar": "^14.0.0",
+    "solid-app-router": "^0.3.3",
+    "solid-js": "^1.4.2"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.26.0",
+    "@typescript-eslint/parser": "^5.26.0",
+    "eslint": "^8.16.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-airbnb-typescript": "^17.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jsdoc": "^39.3.2",
+    "eslint-plugin-solid": "^0.5.0",
+    "sass": "^1.52.1",
+    "typescript": "^4.7.2",
+    "vite": "^2.9.9",
+    "vite-plugin-solid": "^2.2.6"
   }
 }
