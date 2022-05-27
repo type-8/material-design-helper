@@ -1,17 +1,18 @@
 export class RoutePath {
   readonly names: string[];
-  readonly regExps: RegExp[];
-  readonly length: number;
 
+  readonly regExps: RegExp[];
+
+  readonly length: number;
 
   constructor(
     names: string[],
     public readonly labels: string[],
-    public readonly base?: string
+    public readonly base?: string,
   ) {
     this.names = base
-      ? (names = names.map(name => '/' + base + '/' + name))
-      : (names = names.map(name => '/' + name));
+      ? (names = names.map((name) => `/${base}/${name}`))
+      : (names = names.map((name) => `/${name}`));
 
     const length = this.length = names.length;
 
@@ -20,7 +21,6 @@ export class RoutePath {
       regExps.push(new RegExp(names[i]));
     }
   }
-
 
   checkPathnameMatches(pathname: string, onMatch: (index: number) => void): void {
     const routeLen = this.length;
